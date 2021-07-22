@@ -87,7 +87,7 @@ void BtreeTATPDB::new_special_facility_row(int s_id,
 
   int key = to_sf_compound_key(s_id, sf_type);
 
-  if (bt_insertkey(btsf, (unsigned char *) key,
+  if (bt_insertkey(btsf, (unsigned char *) &key,
                    sizeof(key), 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
     std::cout << "BAD sf insertion";
   }
@@ -105,7 +105,7 @@ void BtreeTATPDB::new_call_forwarding_row(int s_id,
 
   int key = to_cf_compound_key(s_id, sf_type, start_time);
 
-  if (bt_insertkey(btsf, (unsigned char *) key,
+  if (bt_insertkey(btsf, (unsigned char *) &key,
                    sizeof(key), 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
     std::cout << "BAD cf insertion";
   }
