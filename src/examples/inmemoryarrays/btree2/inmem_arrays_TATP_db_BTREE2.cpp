@@ -50,9 +50,8 @@ void BtreeTATPDB::new_subscriber_row(int s_id,
   sprintf(keystr, "%d", s_id);
   int len = strlen(keystr);
 
-  if (bt_insertkey(btmgrs2, (unsigned char *) keystr,
-      len, 0, (void*) s_heap_index_, sizeof(s_heap_index_),
-      BtSlotType::Unique ) != BTERR_ok) {
+  if (bt_insertkey(bts, (unsigned char *) keystr,
+      len, 0, (uid) s_heap_index_, 0) != BTERR_ok) {
     std::cout << "BAD insertion";
   }
 
