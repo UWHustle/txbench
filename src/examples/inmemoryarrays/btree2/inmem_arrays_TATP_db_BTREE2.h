@@ -28,10 +28,10 @@ class BtreeTATPDB {
   }
 
   void init(int num_rows) {
-    s_heap_ = new SRow[num_rows];
-    ai_heap_ = new AIRow[num_rows * 4];
-    sf_heap_ = new SFRow[num_rows * 12];
-    cf_heap_ = new CFRow[num_rows * 4];
+    s_heap_ = new SRow[num_rows+10];
+    ai_heap_ = new AIRow[(num_rows+10) * 4];
+    sf_heap_ = new SFRow[(num_rows+10) * 12];
+    cf_heap_ = new CFRow[(num_rows+10) * 4];
 
     bts = bt_open("sbtree", BT_rw, 16, 8192);
     btai = bt_open("sbtree", BT_rw, 16, 8192);
@@ -101,10 +101,10 @@ class BtreeTATPDB {
   SFRow *sf_heap_ = nullptr;
   CFRow *cf_heap_ = nullptr;
 
-  int s_heap_index_ = 0;
-  int ai_heap_index_ = 0;
-  int sf_heap_index_ = 0;
-  int cf_heap_index_ = 0;
+  int s_heap_index_ = 1;
+  int ai_heap_index_ = 1;
+  int sf_heap_index_ = 1;
+  int cf_heap_index_ = 1;
 
   int mtx_id = 0;
 
