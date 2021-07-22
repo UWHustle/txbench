@@ -1,3 +1,7 @@
+#ifndef btree2
+#define btree2
+
+
 // btree version 2v  linux futex contention
 //	with combined latch & pool manager
 //	and phase-fair reader writer lock
@@ -323,3 +327,5 @@ extern uint bt_tod (BtDb *bt, uint slot);
 
 //	Access macros to address slot and key values from the page.
 //	Page slots use 1 based indexing.
+
+#endif

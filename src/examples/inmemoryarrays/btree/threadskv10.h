@@ -1,3 +1,6 @@
+#ifndef threadskv10
+#define threadskv10
+
 #define _FILE_OFFSET_BITS 64
 #define _LARGEFILE64_SOURCE
 
@@ -368,3 +371,5 @@ BTERR bt_promote (BtDb *bt);
 #define keyptr(page, slot) ((BtKey*)((unsigned char*)(page) + slotptr(page, slot)->off))
 #define valptr(page, slot) ((BtVal*)(keyptr(page,slot)->key + keyptr(page,slot)->len))
 #define fenceptr(page) ((BtKey*)((unsigned char*)(page) + page->fence))
+
+#endif

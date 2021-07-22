@@ -784,7 +784,7 @@ BtVal *val;
 	page->act = 1;
 
 	if( bt_writepage (mgr, page, page_no, !lvl) ) {
-		fprintf (stderr, "Unable to create btree page %d\n", page_no);
+		fprintf (stderr, "Unable to create btree page %lld\n", page_no);
 		exit(0);
 	}
 }
