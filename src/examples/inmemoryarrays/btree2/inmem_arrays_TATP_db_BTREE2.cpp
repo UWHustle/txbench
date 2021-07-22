@@ -65,7 +65,7 @@ void BtreeTATPDB::new_access_info_row(int s_id,
                               std::move(data3), std::move(data4)};
 
 
-  int key = to_ai_compound_key(s_id, ai_type));
+  int key = to_ai_compound_key(s_id, ai_type);
 
   if (bt_insertkey(btai, (unsigned char *) &key,
                    sizeof(key), 0, (uid) ai_heap_index_, 0) != BTERR_ok) {
