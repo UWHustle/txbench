@@ -396,7 +396,7 @@ BTERR bt_promote (BtDb *bt);
 //	Page slots use 1 based indexing.
 */
 
-#include "btree.h"
+#include "threadskv10.h"
 #define slotptr(page, slot) (((BtSlot *)(page+1)) + ((slot)-1))
 #define keyptr(page, slot) ((BtKey*)((unsigned char*)(page) + slotptr(page, slot)->off))
 #define valptr(page, slot) ((BtVal*)(keyptr(page,slot)->key + keyptr(page,slot)->len))
