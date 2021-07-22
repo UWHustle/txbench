@@ -102,7 +102,7 @@ typedef enum{
   BtLockParent
 }BtLock;
 
-enum {
+typedef enum {
   QueRd = 1,		// reader queue
   QueWr = 2		// writer queue
 } RWQueue;
