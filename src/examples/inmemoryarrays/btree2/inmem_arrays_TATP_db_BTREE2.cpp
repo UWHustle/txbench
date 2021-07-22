@@ -85,7 +85,7 @@ void BtreeTATPDB::new_special_facility_row(int s_id,
   sf_heap_[sf_heap_index_] = {s_id, sf_type, is_active, error_cntrl,
                               data_a, std::move(data_b)};
 
-  int key = to_sf_compound_key(s_id, sf_type));
+  int key = to_sf_compound_key(s_id, sf_type);
 
   if (bt_insertkey(btsf, (unsigned char *) key,
                    sizeof(key), 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
@@ -103,7 +103,7 @@ void BtreeTATPDB::new_call_forwarding_row(int s_id,
   cf_heap_[cf_heap_index_] =
       {s_id, sf_type, start_time, end_time, std::move(numberx)};
 
-  int key = to_cf_compound_key(s_id, sf_type, start_time));
+  int key = to_cf_compound_key(s_id, sf_type, start_time);
 
   if (bt_insertkey(btsf, (unsigned char *) key,
                    sizeof(key), 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
