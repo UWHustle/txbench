@@ -133,7 +133,6 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
                                      int *msc_location,
                                      int *vlr_location) {
   tx1_total++;
-  if (tx1_total > 20 ) {return;}
 
   //////
   std::shared_lock lock(s_mutex_);
