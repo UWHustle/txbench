@@ -133,6 +133,7 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
                                      int *msc_location,
                                      int *vlr_location) {
   tx1_total++;
+  if (tx1_total > 20 ) {return;}
 
   //////
   std::shared_lock lock(s_mutex_);
@@ -143,7 +144,7 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   int len = strlen(keystr);
 
   int out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
-  std::cout << "TX1 " << s_id << "RES: " << out<<  std::endl;
+  std::cout << "TX1 " << s_id << " RES: " << out<<  std::endl;
   if (out == 0) { return; }
 
   SRow *srow = &s_heap_[out];
