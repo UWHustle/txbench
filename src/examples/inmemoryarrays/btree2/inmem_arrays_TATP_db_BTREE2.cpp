@@ -49,7 +49,7 @@ void BtreeTATPDB::new_subscriber_row(int s_id,
 //  sprintf(keystr, "%d", s_id);
 //  int len = strlen(keystr);
 
-  if (bt_insertkey(bts, (unsigned char *) s_id,
+  if (bt_insertkey(bts, (unsigned char *) &s_id,
       sizeof(s_id), 0, (uid) s_heap_index_, 0) != BTERR_ok) {
     std::cout << "BAD insertion";
   }
@@ -140,7 +140,7 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   sprintf(keystr, "%d", s_id);
   int len = strlen(keystr);
 
-  int out = bt_findkey(bts, (unsigned char *)s_id, sizeof(s_id));
+  int out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
   if (out == 0) { return; }
 
   SRow *srow = &s_heap_[out];
