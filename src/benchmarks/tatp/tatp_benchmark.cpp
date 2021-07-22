@@ -59,7 +59,7 @@ void TATPBenchmark::load() {
 
   std::vector<int> s_ids(num_rows_);
   std::iota(s_ids.begin(), s_ids.end(), 1);
-  std::shuffle(s_ids.begin(), s_ids.end(), rg.mt());
+//  std::shuffle(s_ids.begin(), s_ids.end(), rg.mt());
 
   for (int s_id : s_ids) {
     std::string sub_nbr = leading_zero_pad(15, std::to_string(s_id));
