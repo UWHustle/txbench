@@ -45,16 +45,11 @@ void BtreeTATPDB::new_subscriber_row(int s_id,
                             msc_location, vlr_location,
                             mtx_id++};
 
-//  char keystr[10];
-//  sprintf(keystr, "%d", s_id);
-//  int len = strlen(keystr);
-
   if (bt_insertkey(bts, (unsigned char *) &s_id,
       sizeof(s_id), 0, (uid) s_heap_index_, 0) != BTERR_ok) {
-    std::cout << "BAD insertion";
+    std::cout << "BAD S insertion";
   }
-  std::cout << "S insertion " << s_id << " - " << s_heap_index_ << std::endl;
-
+//  std::cout << "S insertion " << s_id << " - " << s_heap_index_ << std::endl;
 
   s_heap_index_++;
 
@@ -70,13 +65,11 @@ void BtreeTATPDB::new_access_info_row(int s_id,
                               std::move(data3), std::move(data4)};
 
 
-  char keystr[10];
-  sprintf(keystr, "%d", to_ai_compound_key(s_id, ai_type));
-  int len = strlen(keystr);
+  int key = to_ai_compound_key(s_id, ai_type));
 
-  if (bt_insertkey(btai, (unsigned char *) keystr,
-                   len, 0, (uid) ai_heap_index_, 0) != BTERR_ok) {
-    std::cout << "BAD insertion";
+  if (bt_insertkey(btai, (unsigned char *) &key,
+                   sizeof(key), 0, (uid) ai_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD AI insertion";
   }
 
   ai_heap_index_++;
@@ -92,13 +85,11 @@ void BtreeTATPDB::new_special_facility_row(int s_id,
   sf_heap_[sf_heap_index_] = {s_id, sf_type, is_active, error_cntrl,
                               data_a, std::move(data_b)};
 
-  char keystr[10];
-  sprintf(keystr, "%d", to_sf_compound_key(s_id, sf_type));
-  int len = strlen(keystr);
+  int key = to_sf_compound_key(s_id, sf_type));
 
-  if (bt_insertkey(btsf, (unsigned char *) keystr,
-                   len, 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
-    std::cout << "BAD insertion";
+  if (bt_insertkey(btsf, (unsigned char *) key,
+                   sizeof(key), 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD sf insertion";
   }
 
   sf_heap_index_++;
@@ -112,13 +103,11 @@ void BtreeTATPDB::new_call_forwarding_row(int s_id,
   cf_heap_[cf_heap_index_] =
       {s_id, sf_type, start_time, end_time, std::move(numberx)};
 
-  char keystr[10];
-  sprintf(keystr, "%d", to_cf_compound_key(s_id, sf_type, start_time));
-  int len = strlen(keystr);
+  int key = to_cf_compound_key(s_id, sf_type, start_time));
 
-  if (bt_insertkey(btsf, (unsigned char *) keystr,
-                   len, 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
-    std::cout << "BAD insertion";
+  if (bt_insertkey(btsf, (unsigned char *) key,
+                   sizeof(key), 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD cf insertion";
   }
 
   cf_heap_index_++;
