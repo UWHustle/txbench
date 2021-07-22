@@ -65,18 +65,18 @@ void BtreeTATPDB::new_access_info_row(int s_id,
   ai_heap_[ai_heap_index_] = {s_id, ai_type, data1, data2,
                               std::move(data3), std::move(data4)};
 
-//
-//  int key = to_ai_compound_key(s_id, ai_type);
-//
-//  std::cout << "Start AI insertion" << std::endl;
-//  if (bt_insertkey(btai, (unsigned char *) &key,
-//                   sizeof(key), 0, (uid) ai_heap_index_, 0) != BTERR_ok) {
-//    std::cout << "BAD AI insertion";
-//  }
-//
-//  std::cout << "End AI insertion" << std::endl;
-//
-//  ai_heap_index_++;
+
+  int key = to_ai_compound_key(s_id, ai_type);
+
+  std::cout << "Start AI insertion" << std::endl;
+  if (bt_insertkey(btai, (unsigned char *) &key,
+                   sizeof(key), 0, (uid) ai_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD AI insertion";
+  }
+
+  std::cout << "End AI insertion" << std::endl;
+
+  ai_heap_index_++;
 
 }
 
@@ -91,14 +91,14 @@ void BtreeTATPDB::new_special_facility_row(int s_id,
 
   int key = to_sf_compound_key(s_id, sf_type);
 
-//  std::cout << "Start SF insertion" << std::endl;
-//  if (bt_insertkey(btsf, (unsigned char *) &key,
-//                   sizeof(key), 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
-//    std::cout << "BAD sf insertion";
-//  }
-//
-//  std::cout << "END SF insertion" << std::endl;
-//  sf_heap_index_++;
+  std::cout << "Start SF insertion" << std::endl;
+  if (bt_insertkey(btsf, (unsigned char *) &key,
+                   sizeof(key), 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD sf insertion";
+  }
+
+  std::cout << "END SF insertion" << std::endl;
+  sf_heap_index_++;
 }
 
 void BtreeTATPDB::new_call_forwarding_row(int s_id,
@@ -111,14 +111,14 @@ void BtreeTATPDB::new_call_forwarding_row(int s_id,
 
   int key = to_cf_compound_key(s_id, sf_type, start_time);
 
-//  std::cout << "Start CF insertion" << std::endl;
-//  if (bt_insertkey(btsf, (unsigned char *) &key,
-//                   sizeof(key), 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
-//    std::cout << "BAD cf insertion";
-//  }
-//  std::cout << "END CF insertion" << std::endl;
-//
-//  cf_heap_index_++;
+  std::cout << "Start CF insertion" << std::endl;
+  if (bt_insertkey(btsf, (unsigned char *) &key,
+                   sizeof(key), 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD cf insertion";
+  }
+  std::cout << "END CF insertion" << std::endl;
+
+  cf_heap_index_++;
 
 }
 
