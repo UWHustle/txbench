@@ -54,7 +54,7 @@ void BtreeTATPDB::new_subscriber_row(int s_id,
     std::cout << "BAD insertion";
   }
 
-//  s_alex_.insert(s_id, s_heap_index_++);
+  s_heap_index_++;
 
 }
 
@@ -66,7 +66,18 @@ void BtreeTATPDB::new_access_info_row(int s_id,
                                      std::string data4) {
   ai_heap_[ai_heap_index_] = {s_id, ai_type, data1, data2,
                               std::move(data3), std::move(data4)};
-//  ai_alex_.insert(to_ai_compound_key(s_id, ai_type), ai_heap_index_++);
+
+
+  char keystr[10];
+  sprintf(keystr, "%d", to_ai_compound_key(s_id, ai_type));
+  int len = strlen(keystr);
+
+  if (bt_insertkey(btai, (unsigned char *) keystr,
+                   len, 0, (uid) ai_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD insertion";
+  }
+
+  ai_heap_index_++;
 
 }
 
@@ -79,7 +90,16 @@ void BtreeTATPDB::new_special_facility_row(int s_id,
   sf_heap_[sf_heap_index_] = {s_id, sf_type, is_active, error_cntrl,
                               data_a, std::move(data_b)};
 
-//  sf_alex_.insert(to_sf_compound_key(s_id, sf_type), sf_heap_index_++);
+  char keystr[10];
+  sprintf(keystr, "%d", to_sf_compound_key(s_id, sf_type));
+  int len = strlen(keystr);
+
+  if (bt_insertkey(btsf, (unsigned char *) keystr,
+                   len, 0, (uid) sf_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD insertion";
+  }
+
+  sf_heap_index_++;
 }
 
 void BtreeTATPDB::new_call_forwarding_row(int s_id,
@@ -90,8 +110,17 @@ void BtreeTATPDB::new_call_forwarding_row(int s_id,
   cf_heap_[cf_heap_index_] =
       {s_id, sf_type, start_time, end_time, std::move(numberx)};
 
-//  cf_alex_.insert(to_cf_compound_key(s_id, sf_type, start_time),
-//                  cf_heap_index_++);
+  char keystr[10];
+  sprintf(keystr, "%d", to_cf_compound_key(s_id, sf_type, start_time));
+  int len = strlen(keystr);
+
+  if (bt_insertkey(btsf, (unsigned char *) keystr,
+                   len, 0, (uid) cf_heap_index_, 0) != BTERR_ok) {
+    std::cout << "BAD insertion";
+  }
+
+  cf_heap_index_++;
+
 }
 
 void BtreeTATPDB::get_subscriber_data(int s_id,

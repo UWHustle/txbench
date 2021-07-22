@@ -56,7 +56,7 @@ void BtreeTATPDB::new_subscriber_row(int s_id,
     std::cout << "BAD insertion";
   }
 
-//  s_alex_.insert(s_id, s_heap_index_++);
+  s_heap_index_++;
 
 }
 
@@ -68,7 +68,19 @@ void BtreeTATPDB::new_access_info_row(int s_id,
                                      std::string data4) {
   ai_heap_[ai_heap_index_] = {s_id, ai_type, data1, data2,
                               std::move(data3), std::move(data4)};
-//  ai_alex_.insert(to_ai_compound_key(s_id, ai_type), ai_heap_index_++);
+
+
+  char keystr[10];
+  sprintf(keystr, "%d", to_ai_compound_key(s_id, ai_type));
+  int len = strlen(keystr);
+
+  if (bt_insertkey(btmgrs2, (unsigned char *) keystr,
+                   len, 0, (void*) ai_heap_index_, sizeof(ai_heap_index_),
+                   BtSlotType::Unique ) != BTERR_ok) {
+    std::cout << "BAD insertion";
+  }
+
+  ai_heap_index_++;
 
 }
 
