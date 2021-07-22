@@ -44,6 +44,7 @@ void BtreeTATPDB::new_subscriber_row(int s_id,
   s_heap_[s_heap_index_] = {s_id, sub_nbr, bit, hex, byte2,
                             msc_location, vlr_location,
                             mtx_id++};
+
 //  std::cout << "Start S insertion" << std::endl;
   if (bt_insertkey(bts, (unsigned char *) &s_id,
       sizeof(s_id), 0, (uid) s_heap_index_, 0) != BTERR_ok) {
@@ -135,9 +136,12 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   std::shared_lock lock(s_mutex_);
   //////
 
-  char keystr[10];
-  sprintf(keystr, "%d", s_id);
-  int len = strlen(keystr);
+//  char keystr[10];
+//  sprintf(keystr, "%d", s_id);
+//  int len = strlen(keystr);
+
+
+  s_id = 10;
 
   int out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
   std::cout << "TX1 " << s_id << " RES: " << out<<  std::endl;
