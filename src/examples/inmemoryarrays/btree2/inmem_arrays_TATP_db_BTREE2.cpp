@@ -136,17 +136,10 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   std::shared_lock lock(s_mutex_);
   //////
 
-//  char keystr[10];
-//  sprintf(keystr, "%d", s_id);
-//  int len = strlen(keystr);
+  int out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
+//  std::cout << "TX1 " << s_id << " RES: " << out << std::endl;
 
-  int out;
-  for (int i = 0; i < 1000; i++) {
-    s_id = i;
-    out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
-    std::cout << "TX1 " << s_id << " RES: " << out << std::endl;
-  }
-    if (out == 0) { return; }
+  if (out == 0) { return; }
 
   SRow *srow = &s_heap_[out];
 
