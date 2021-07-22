@@ -1,6 +1,5 @@
 #include "../inmem_arrays_TATP_db.h"
 #include "inmem_arrays_TATP_db_BTREE2.h"
-//#include "inmem_arrays_TATP_db_PALM.h"
 
 #include <iostream>
 

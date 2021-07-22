@@ -26,11 +26,11 @@ BTERR bt_abort (BtDb *bt, BtPage page, uid page_no, BTERR err)
 {
   BtKey ptr;
 
-  fprintf(stderr, "\n Btree2 abort, error %d on page %.8x\n", err, page_no);
+  fprintf(stderr, "\n Btree2 abort, error %d on page %.8llx\n", err, page_no);
   fprintf(stderr, "level=%d kill=%d free=%d cnt=%x act=%x\n", page->lvl, page->kill, page->free, page->cnt, page->act);
   ptr = keyptr(page, page->cnt);
   fprintf(stderr, "fence='%.*s'\n", ptr->len, ptr->key);
-  fprintf(stderr, "right=%.8x\n", bt_getid(page->right));
+  fprintf(stderr, "right=%.8llx\n", bt_getid(page->right));
   return bt->err = err;
 }
 
@@ -146,7 +146,7 @@ BTERR bt_readpage (BtDb *bt, BtPage page, uid page_no)
 
 #ifdef unix
   if( pread (bt->idx, page, bt->page_size, page_no << bt->page_bits) < bt->page_size ) {
-		fprintf (stderr, "Unable to read page %.8x errno = %d\n", page_no, errno);
+		fprintf (stderr, "Unable to read page %.8llx errno = %d\n", page_no, errno);
 		return bt->err = BTERR_read;
 	}
 #else

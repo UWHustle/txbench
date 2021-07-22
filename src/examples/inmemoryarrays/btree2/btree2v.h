@@ -27,10 +27,10 @@ REDISTRIBUTION OF THIS SOFTWARE.
 // code.google.com/p/high-concurrency-btree
 
 #define _FILE_OFFSET_BITS 64
-#define _LARGEFILE64_SOURCE
+//#define _LARGEFILE64_SOURCE
 
 #ifdef linux
-#define _GNU_SOURCE
+//#define _GNU_SOURCE
 #include <linux/futex.h>
 #include <limits.h>
 #define SYS_futex 202
