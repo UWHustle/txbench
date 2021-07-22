@@ -143,7 +143,7 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   int out = bt_findkey(bts, (unsigned char *)keystr, len);
   if (out == 0) { return; }
 
-  SRow *srow = &s_heap_[*out];
+  SRow *srow = &s_heap_[out];
 
   sub_nbr->assign(srow->sub_nbr);
   bit = srow->bit;
