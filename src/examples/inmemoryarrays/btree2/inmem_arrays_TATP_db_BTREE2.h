@@ -33,10 +33,10 @@ class BtreeTATPDB {
     sf_heap_ = new SFRow[num_rows * 12];
     cf_heap_ = new CFRow[num_rows * 4];
 
-    bts = bt_open("sbtree", BT_openmode, 16, 8192);
-    btai = bt_open("sbtree", BT_openmode, 16, 8192);
-    btsf = bt_open("sbtree", BT_openmode, 16, 8192);
-    btcf = bt_open("sbtree", BT_openmode, 16, 8192);
+    bts = bt_open("sbtree", BT_rw, 16, 8192);
+    btai = bt_open("sbtree", BT_rw, 16, 8192);
+    btsf = bt_open("sbtree", BT_rw, 16, 8192);
+    btcf = bt_open("sbtree", BT_rw, 16, 8192);
 
   }
 

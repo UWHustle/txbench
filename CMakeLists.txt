@@ -26,7 +26,7 @@ endif()
 #message(STATUS "Boost version: ${Boost_VERSION}")
 #
 
-find_package (glog)
+#find_package (glog)
 
 set(BOOST_INCLUDE_DIRS /usr/local/Cellar/boost/1.72.0_1/include)
 set(GLOG_INCLUDE_DIRS /usr/local/Cellar/glog/0.4.0/include)
