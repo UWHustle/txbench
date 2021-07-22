@@ -136,18 +136,22 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   std::shared_lock lock(s_mutex_);
   //////
 
-//  int *out = s_alex_.get_payload(s_id);
-//  if (out == nullptr) { return; }
-//
-//  SRow *srow = &s_heap_[*out];
-//
-//  sub_nbr->assign(srow->sub_nbr);
-//  bit = srow->bit;
-//  hex = srow->hex;
-//  byte2 = srow->byte2;
-//  *msc_location = srow->msc_location;
-//  *vlr_location = srow->vlr_location;
-//  tx1_succ++;
+  char keystr[10];
+  sprintf(keystr, "%d", s_id);
+  int len = strlen(keystr);
+
+  int out = bt_findkey(bts, keystr, len);
+  if (out == 0) { return; }
+
+  SRow *srow = &s_heap_[*out];
+
+  sub_nbr->assign(srow->sub_nbr);
+  bit = srow->bit;
+  hex = srow->hex;
+  byte2 = srow->byte2;
+  *msc_location = srow->msc_location;
+  *vlr_location = srow->vlr_location;
+  tx1_succ++;
 
   return;
 }
