@@ -140,7 +140,7 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
   sprintf(keystr, "%d", s_id);
   int len = strlen(keystr);
 
-  int out = bt_findkey(bts, keystr, len);
+  int out = bt_findkey(bts, (unsigned char *)keystr, len);
   if (out == 0) { return; }
 
   SRow *srow = &s_heap_[*out];
