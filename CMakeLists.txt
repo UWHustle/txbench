@@ -28,10 +28,10 @@ endif()
 
 #find_package (glog)
 
-set(BOOST_INCLUDE_DIRS /usr/local/Cellar/boost/1.72.0_1/include)
-set(GLOG_INCLUDE_DIRS /usr/local/Cellar/glog/0.4.0/include)
-set(GFLAG_INCLUDE_DIRS /usr/local/Cellar/gflags/2.2.2/include)
-set(JEMALLOC_INCLUDE_DIRS /usr/local/Cellar/jemalloc/5.2.1_1/include)
+#set(BOOST_INCLUDE_DIRS /usr/local/Cellar/boost/1.72.0_1/include)
+#set(GLOG_INCLUDE_DIRS /usr/local/Cellar/glog/0.4.0/include)
+#set(GFLAG_INCLUDE_DIRS /usr/local/Cellar/gflags/2.2.2/include)
+#set(JEMALLOC_INCLUDE_DIRS /usr/local/Cellar/jemalloc/5.2.1_1/include)
 
 link_directories(/usr/local/Cellar/boost/1.72.0_1/lib/)
 link_directories(${GLOG_INCLUDE_DIRS}/../lib)
