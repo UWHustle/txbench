@@ -141,11 +141,12 @@ void BtreeTATPDB::get_subscriber_data(int s_id,
 //  int len = strlen(keystr);
 
 
-  s_id = 10;
-
-  int out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
-  std::cout << "TX1 " << s_id << " RES: " << out<<  std::endl;
-  if (out == 0) { return; }
+  for (int i = 0; i < 1000; i++) {
+    s_id = i;
+    int out = bt_findkey(bts, (unsigned char *) &s_id, sizeof(s_id));
+    std::cout << "TX1 " << s_id << " RES: " << out << std::endl;
+  }
+    if (out == 0) { return; }
 
   SRow *srow = &s_heap_[out];
 
