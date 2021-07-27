@@ -10,7 +10,7 @@ add_subdirectory(art)
 
 add_executable(
         inmemarrays_alex
-        index.h
+        Index.h
         inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
         alex/AlexIndex.h alex/AlexIndex.cpp
         alex/inmem_arrays_ALEX.cpp
@@ -30,7 +30,7 @@ target_include_directories(inmemarrays_alex
 
 add_executable(
         inmemarrays_art
-        index.h
+        Index.h
         inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
         art/ARTIndex.h art/ARTIndex.cpp
         art/inmem_arrays_ART.cpp
