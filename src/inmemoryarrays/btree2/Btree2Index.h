@@ -1,5 +1,5 @@
-#ifndef TXBENCH_SRC_INMEMORYARRAYS_ALEX_ALEX_LIB_ALEXINDEX_H_
-#define TXBENCH_SRC_INMEMORYARRAYS_ALEX_ALEX_LIB_ALEXINDEX_H_
+#ifndef TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
+#define TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
 #include "../Index.h"
 #include "btree2v.h"
 
@@ -13,9 +13,9 @@ class Btree2Iterator : public IndexIterator {
 
   void getval(void** val) override;
 
-//  alex::Alex<int,
+//  BTREE2::BTREE2<int,
 //             void*,
-//             alex::AlexCompare,
+//             BTREE2::BTREE2Compare,
 //             std::allocator<std::pair<int, void*>>, false>::Iterator iter_;
 
 };
@@ -44,4 +44,4 @@ class Btree2Index : public Index {
 
 
 
-#endif //TXBENCH_SRC_INMEMORYARRAYS_ALEX_ALEX_LIB_ALEXINDEX_H_
+#endif //TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
