@@ -46,3 +46,21 @@ target_include_directories(inmemarrays_art
         PRIVATE Threads::Threads)
 
 
+#############
+
+add_executable(
+        inmemarrays_btree2
+        btree2/inmem_arrays_BTREE2.cpp
+        btree2/btree2v.c btree2/btree2v.h
+        inmem_arrays_TATP_db.cpp
+)
+
+target_link_libraries(inmemarrays_btree2
+        PRIVATE Threads::Threads
+        txbench_tatp)
+
+target_include_directories(inmemarrays_btree2
+        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+
+
