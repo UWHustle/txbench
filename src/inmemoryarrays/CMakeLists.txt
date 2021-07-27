@@ -1,6 +1,6 @@
 add_subdirectory(alex)
 #add_subdirectory(palm)
-add_subdirectory(naive)
+#add_subdirectory(naive)
 add_subdirectory(art)
 #add_subdirectory(tlxmine)
 #add_subdirectory(threads_btree)
@@ -50,9 +50,11 @@ target_include_directories(inmemarrays_art
 
 add_executable(
         inmemarrays_btree2
+        Index.h
+        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+        btree2/Btree2Index.h btree2/Btree2Index.cpp
         btree2/inmem_arrays_BTREE2.cpp
         btree2/btree2v.c btree2/btree2v.h
-        inmem_arrays_TATP_db.cpp
 )
 
 target_link_libraries(inmemarrays_btree2
