@@ -5,11 +5,7 @@
 
 class Btree2Iterator : public IndexIterator {
  public:
-  AlexIterator(alex::Alex<int,
-                          void*,
-                          alex::AlexCompare,
-                          std::allocator<std::pair<int, void*>>,
-                          false>::Iterator iter): iter_(iter) {}
+  Btree2Iterator() {}
 
   bool next() override;
 
