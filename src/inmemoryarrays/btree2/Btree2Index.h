@@ -21,13 +21,14 @@ class Btree2Iterator : public IndexIterator {
 
 };
 
-std::string s = std::to_string(uidfile) + "fileindexname";
+static int uidfile = 333;
 
 
 class Btree2Index : public Index {
  public:
-  static int uidfile = 333;
   Btree2Index() {
+    std::string s = std::to_string(uidfile) + "fileindexname";
+
     uidfile++;
     index_ = bt_open(s.c_str(), BT_rw, 16, 8192);
   }
