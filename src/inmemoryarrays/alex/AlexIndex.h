@@ -31,9 +31,9 @@ class AlexIndex : public Index {
 
   ~AlexIndex() {}
 
-  bool insert(int key, void* value, int heap_id) override;
+  bool insert(int key, void* value, int rowid) override;
 
-  bool search(int key, void** value) override;
+  bool search(int key, void **value, void* heapbase, int rowsize_bytes) override;
 
   IndexIterator* lower_bound(int key) override;
 

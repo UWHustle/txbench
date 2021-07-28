@@ -18,9 +18,9 @@ class Index {
 
   ~Index() {};
 
-  virtual bool insert(int key, void* value) = 0;
+  virtual bool insert(int key, void* value, int rowid) = 0;
 
-  virtual bool search(int key, void** value) = 0;
+  virtual bool search(int key, void **value, void* heapbase, int rowsize_bytes) = 0;
 
   virtual IndexIterator* lower_bound(int key) = 0;
 

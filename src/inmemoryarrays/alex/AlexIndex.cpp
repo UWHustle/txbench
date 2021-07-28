@@ -15,12 +15,12 @@ void AlexIterator::getval(void **val) {
   *val = iter_.payload();
 }
 
-bool AlexIndex::insert(int key, void *value) {
+bool AlexIndex::insert(int key, void *value, int rowid) {
   index_.insert(key, value);
   return true;
 }
 
-bool AlexIndex::search(int key, void **value) {
+bool AlexIndex::search(int key, void **value, void* heapbase, int rowsize_bytes) {
   void **out = index_.get_payload(key);
   if (out == nullptr) {
     return false;

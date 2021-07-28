@@ -12,12 +12,12 @@ bool ARTIterator::next() {
 void ARTIterator::getval(void **val) {
 }
 
-bool ARTIndex::insert(int key, void *value) {
+bool ARTIndex::insert(int key, void* value, int rowid) {
   art_insert(&index_, (unsigned char *) &key, sizeof(key), (void *) value);
   return true;
 }
 
-bool ARTIndex::search(int key, void **value) {
+bool ARTIndex::search(int key, void **value, void* heapbase, int rowsize_bytes) {
   void *out = (void *) art_search(&index_, (unsigned char *) &key, sizeof(key));
   if (out == nullptr) { return false; }
   *value = out;

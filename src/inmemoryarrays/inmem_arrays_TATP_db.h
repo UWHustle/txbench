@@ -386,7 +386,7 @@ void InMemArraysTATPDB<IndexType>::new_subscriber_row(int s_id,
                             msc_location, vlr_location,
                             mtx_id++};
 
-  s_index_.insert(s_id, s_heap_ + s_heap_index_);
+  s_index_.insert(s_id, s_heap_ + s_heap_index_, s_heap_index_);
   s_heap_index_++;
 }
 
@@ -400,7 +400,7 @@ void InMemArraysTATPDB<IndexType>::new_access_info_row(int s_id,
   ai_heap_[ai_heap_index_] = {s_id, ai_type, data1, data2,
                               std::move(data3), std::move(data4)};
   ai_index_.insert(to_ai_compound_key(s_id, ai_type),
-                   ai_heap_ + ai_heap_index_);
+                   ai_heap_ + ai_heap_index_, ai_heap_index_);
   ai_heap_index_++;
 
 }
@@ -416,7 +416,7 @@ void InMemArraysTATPDB<IndexType>::new_special_facility_row(int s_id,
                               data_a, std::move(data_b)};
 
   sf_index_.insert(to_sf_compound_key(s_id, sf_type),
-                   sf_heap_ + sf_heap_index_);
+                   sf_heap_ + sf_heap_index_, sf_heap_index_);
   sf_heap_index_++;
 }
 
@@ -430,7 +430,7 @@ void InMemArraysTATPDB<IndexType>::new_call_forwarding_row(int s_id,
       {s_id, sf_type, start_time, end_time, std::move(numberx)};
 
   cf_index_.insert(to_cf_compound_key(s_id, sf_type, start_time),
-                   cf_heap_ + cf_heap_index_);
+                   cf_heap_ + cf_heap_index_, cf_heap_index_);
   cf_heap_index_++;
 }
 
@@ -453,7 +453,7 @@ void InMemArraysTATPDB<IndexType>::get_subscriber_data(int s_id,
   //////
 
   void *out;
-  if (s_index_.search(s_id, &out) == false) { return; }
+  if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) { return; }
 
   SRow *srow = (SRow *) out;
 
@@ -493,7 +493,7 @@ void InMemArraysTATPDB<IndexType>::get_new_destination(int s_id,
   /////
 
   void *out = nullptr;
-  if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out) == false) {
+  if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out, (void*) sf_heap_, sizeof(SFRow)) == false) {
     return;
   }
 
@@ -530,7 +530,7 @@ void InMemArraysTATPDB<IndexType>::get_access_data(int s_id,
   ///
 
   void *out;
-  if (ai_index_.search(to_ai_compound_key(s_id, ai_type), &out)
+  if (ai_index_.search(to_ai_compound_key(s_id, ai_type), &out, (void*) ai_heap_, sizeof(AIRow))
       == false) { return; }
 
   AIRow *airow = (AIRow *) out;
@@ -562,7 +562,7 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
   // WHERE s_id = <s_id rnd subid>;
 
   void *out;
-  if (s_index_.search(s_id, &out) == false) { return; }
+  if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) { return; }
 
   SRow *srow = (SRow *) out;
 
@@ -571,7 +571,7 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
   // UPDATE Special_Facility SET data_a = <data_a rnd>
   // WHERE s_id = <s_id value subid> AND sf_type = <sf_type rnd>;
   void *out2;
-  if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out2)
+  if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out2, (void*) sf_heap_, sizeof(SFRow))
       == false) { return; }
 
   SFRow *sf_rowid = (SFRow *) out2;
@@ -602,7 +602,7 @@ void InMemArraysTATPDB<IndexType>::update_location(const std::string &sub_nbr,
   int s_id = std::stoi(sub_nbr);
 
   void *out;
-  if (s_index_.search(s_id, &out) == false) { return; }
+  if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) { return; }
 
   SRow *srow = (SRow *) out;
   srow->vlr_location = vlr_location;
@@ -632,7 +632,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
 
   int s_id = std::stoi(sub_nbr);
   void *out;
-  if (s_index_.search(s_id, &out) == false) { return; }
+  if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) { return; }
 
   SRow *srow = (SRow *) out;
 
@@ -641,7 +641,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
   // WHERE s_id = <s_id value subid>;
 
   void *out2;
-  if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out2)
+  if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out2, (void*) sf_heap_, sizeof(SFRow))
       == false) { return; }
   SFRow *sfrow = (SFRow *) out2;
 
@@ -650,14 +650,14 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
   // <start_time rnd>, <end_time rnd>, <numberx rndstr>);
 
   void *out3;
-  if (cf_index_.search(to_cf_compound_key(s_id, sf_type, start_time), &out3)
+  if (cf_index_.search(to_cf_compound_key(s_id, sf_type, start_time), &out3, (void*) cf_heap_, sizeof(CFRow))
       == false) { return; }
 
   cf_heap_[cf_heap_index_] =
       {s_id, sf_type, start_time, end_time, std::move(numberx)};
 
   cf_index_.insert(to_cf_compound_key(s_id, sf_type, start_time),
-                   cf_heap_ + cf_heap_index_);
+                   cf_heap_ + cf_heap_index_, cf_heap_index_);
 
   cf_heap_index_++;
 
@@ -684,7 +684,7 @@ void InMemArraysTATPDB<IndexType>::delete_call_forwarding(const std::string &sub
   // WHERE sub_nbr = <sub_nbr rndstr>;
   int s_id = std::stoi(sub_nbr);
   void *out;
-  if (s_index_.search(s_id, &out) == false) { return; }
+  if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) { return; }
 
   SRow *srow = (SRow *) out;
 
