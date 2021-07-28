@@ -23,11 +23,15 @@ class Btree2Iterator : public IndexIterator {
 class Btree2Index : public Index {
  public:
 
-  Btree2Index() {}
+  Btree2Index(char* name) {
+    index_ = bt_open(name, BT_rw, 16, 8192);
+  }
 
-  ~Btree2Index() {}
+  ~Btree2Index() {
+    bt_close(index_);
+  }
 
-  bool insert(int key, void* value) override;
+  bool insert(int key, int heap_index, void* value) override;
 
   bool search(int key, void** value) override;
 

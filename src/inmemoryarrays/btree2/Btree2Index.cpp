@@ -15,23 +15,26 @@ void Btree2Iterator::getval(void **val) {
 //  *val = iter_.payload();
 }
 
-bool Btree2Index::insert(int key, void *value) {
-//  index_.insert(key, value);
-//  return true;
+
+////////////////////////
+////////////////////////
+
+bool Btree2Index::insert(int key, void *value, int rowid) {
+  bt_insertkey(index_, (unsigned char *) &key, sizeof(key), 0, rowid);
+  return true;
 }
 
-bool Btree2Index::search(int key, void **value) {
-//  void **out = index_.get_payload(key);
-//  if (out == nullptr) {
-//    return false;
-//  }
-//  *value = *out;
-//  return true;
+bool Btree2Index::search(int key, void **value, void* heapbase, int rowsize_bytes) {
+  int rowid = bt_findkey(index_, (unsigned char *) &key, sizeof(key));
+  if (rowid == 0) {return false;}
+  *value = (heapbase + rowsize_bytes*rowid);
+  return true;
 }
 
 bool Btree2Index::remove(int key) {
-//  if (index_.erase_one(key) > 0) { return true; }
-//  return false;
+  int res = bt_deletekey(index_, (unsigned char *) &key, sizeof(key), 0);
+  if (res == 0) {return true;}
+  return false;
 }
 
 IndexIterator *Btree2Index::lower_bound(int key) {

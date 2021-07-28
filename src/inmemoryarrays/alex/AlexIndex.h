@@ -31,7 +31,7 @@ class AlexIndex : public Index {
 
   ~AlexIndex() {}
 
-  bool insert(int key, void* value) override;
+  bool insert(int key, void* value, int heap_id) override;
 
   bool search(int key, void** value) override;
 
