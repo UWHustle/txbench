@@ -2,6 +2,7 @@
 #define TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
 #include "../Index.h"
 #include "btree2v.h"
+#include <string>
 
 class Btree2Iterator : public IndexIterator {
  public:
@@ -24,7 +25,7 @@ class Btree2Index : public Index {
  public:
   static int uidfile = 333;
   Btree2Index() {
-    string s = std::to_string(uidfile) + "fileindexname";
+    std::string s = std::to_string(uidfile) + "fileindexname";
     uidfile++;
     index_ = bt_open(s, BT_rw, 16, 8192);
   }
