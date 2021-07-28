@@ -31,7 +31,7 @@ class Btree2Index : public Index {
     bt_close(index_);
   }
 
-  bool insert(int key, int heap_index, void* value, int rowid) override;
+  bool insert(int key, void* value, int rowid) override;
 
   bool search(int key, void **value, void* heapbase, int rowsize_bytes) override;
 

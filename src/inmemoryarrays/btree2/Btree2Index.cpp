@@ -19,7 +19,7 @@ void Btree2Iterator::getval(void **val) {
 ////////////////////////
 ////////////////////////
 
-bool Btree2Index::insert(int key, void *value, int rowid) {
+bool Btree2Index::insert(int key, void* value, int rowid) {
   bt_insertkey(index_, (unsigned char *) &key, sizeof(key), 0, rowid);
   return true;
 }
