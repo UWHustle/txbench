@@ -22,9 +22,11 @@ class Btree2Iterator : public IndexIterator {
 
 class Btree2Index : public Index {
  public:
-
-  Btree2Index(char* name) {
-    index_ = bt_open(name, BT_rw, 16, 8192);
+  static int uidfile = 333;
+  Btree2Index() {
+    string s = std::to_string(uidfile) + "fileindexname";
+    uidfile++;
+    index_ = bt_open(s, BT_rw, 16, 8192);
   }
 
   ~Btree2Index() {
