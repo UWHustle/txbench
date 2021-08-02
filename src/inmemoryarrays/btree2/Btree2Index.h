@@ -10,9 +10,9 @@ class Btree2Iterator : public IndexIterator {
 
   bool next() override;
 
-  bool equal(IndexIterator* iter2) override;
+  bool equal(IndexIterator *iter2) override;
 
-  void getval(void** val) override;
+  void getval(void **val) override;
 
 //  BTREE2::BTREE2<int,
 //             void*,
@@ -23,27 +23,29 @@ class Btree2Iterator : public IndexIterator {
 
 static int uidfile = 333;
 
-
 class Btree2Index : public Index {
  public:
   Btree2Index() {
     std::string s = std::to_string(uidfile) + "fileindexname";
-
+    char*
     uidfile++;
-    index_ = bt_open(s.c_str(), BT_rw, 16, 8192);
+    index_ = bt_open(, BT_rw, 16, 8192);
   }
 
   ~Btree2Index() {
     bt_close(index_);
   }
 
-  bool insert(int key, void* value, int rowid) override;
+  bool insert(int key, void *value, int rowid) override;
 
-  bool search(int key, void **value, void* heapbase, int rowsize_bytes) override;
+  bool search(int key,
+              void **value,
+              void *heapbase,
+              int rowsize_bytes) override;
 
-  IndexIterator* lower_bound(int key) override;
+  IndexIterator *lower_bound(int key) override;
 
-  IndexIterator* upper_bound(int key) override;
+  IndexIterator *upper_bound(int key) override;
 
   bool remove(int key) override;
 
@@ -51,7 +53,5 @@ class Btree2Index : public Index {
 
   BtDb *index_;
 };
-
-
 
 #endif //TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
