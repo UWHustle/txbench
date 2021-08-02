@@ -27,9 +27,8 @@ class Btree2Index : public Index {
  public:
   Btree2Index() {
     std::string s = std::to_string(uidfile) + "fileindexname";
-    char*
     uidfile++;
-    index_ = bt_open(, BT_rw, 16, 8192);
+    index_ = bt_open(s.c_str(), BT_rw, 16, 8192);
   }
 
   ~Btree2Index() {
