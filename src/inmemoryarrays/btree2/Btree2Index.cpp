@@ -1,5 +1,4 @@
 #include "Btree2Index.h"
-#include "btree2v.h"
 
 #include "../inmem_arrays_TATP_db.h"
 

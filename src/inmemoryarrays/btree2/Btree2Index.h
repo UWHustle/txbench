@@ -1,7 +1,9 @@
 #ifndef TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
 #define TXBENCH_SRC_INMEMORYARRAYS_BTREE2_BTREE2_LIB_BTREE2INDEX_H_
 #include "../Index.h"
+extern "C" {
 #include "btree2v.h"
+}
 #include <string>
 
 class Btree2Iterator : public IndexIterator {
