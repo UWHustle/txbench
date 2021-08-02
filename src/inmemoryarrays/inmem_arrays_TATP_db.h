@@ -446,7 +446,7 @@ void InMemArraysTATPDB<IndexType>::get_subscriber_data(int s_id,
                                                        int *vlr_location) {
   tx1_total++;
 
-  std::cout << "TX1" << std::endl;
+  // std::cout << "TX1" << std::endl;
 
   //////
   std::shared_lock lock(s_mutex_);
@@ -454,7 +454,7 @@ void InMemArraysTATPDB<IndexType>::get_subscriber_data(int s_id,
 
   void *out;
   if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) {
-    std::cout << "TX1 END" << std::endl;
+    // std::cout << "TX1 END" << std::endl;
     return; }
 
   SRow *srow = (SRow *) out;
@@ -467,7 +467,7 @@ void InMemArraysTATPDB<IndexType>::get_subscriber_data(int s_id,
   *vlr_location = srow->vlr_location;
   tx1_succ++;
 
-  std::cout << "TX1 END" << std::endl;
+  // std::cout << "TX1 END" << std::endl;
 
   return;
 
@@ -489,7 +489,7 @@ void InMemArraysTATPDB<IndexType>::get_new_destination(int s_id,
 
   tx2_total++;
 
-  std::cout << "TX2" << std::endl;
+  // std::cout << "TX2" << std::endl;
 
   /////
   std::shared_lock lock(sf_mutex_);
@@ -498,13 +498,13 @@ void InMemArraysTATPDB<IndexType>::get_new_destination(int s_id,
 
   void *out = nullptr;
   if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out, (void*) sf_heap_, sizeof(SFRow)) == false) {
-    std::cout << "TX2 END" << std::endl;
+    // std::cout << "TX2 END" << std::endl;
     return;
   }
 
   SFRow *sfrow = (SFRow *) out;
   if (sfrow->is_active != 1) {
-    std::cout << "TX2 END" << std::endl;
+    // std::cout << "TX2 END" << std::endl;
     return;
   }
 
@@ -514,7 +514,7 @@ void InMemArraysTATPDB<IndexType>::get_new_destination(int s_id,
     tx2_succ++;
   }
 
-  std::cout << "TX2 END" << std::endl;
+  // std::cout << "TX2 END" << std::endl;
   return;
 }
 
@@ -530,7 +530,7 @@ void InMemArraysTATPDB<IndexType>::get_access_data(int s_id,
   // (s_id, ai_type) is a composite primary key.
   tx3_total++;
 
-  std::cout << "TX3" << std::endl;
+  // std::cout << "TX3" << std::endl;
 
   ////
   std::shared_lock lock(ai_mutex_);
@@ -539,7 +539,7 @@ void InMemArraysTATPDB<IndexType>::get_access_data(int s_id,
   void *out;
   if (ai_index_.search(to_ai_compound_key(s_id, ai_type), &out, (void*) ai_heap_, sizeof(AIRow))
       == false) {
-    std::cout << "TX3 END" << std::endl;
+    // std::cout << "TX3 END" << std::endl;
     return;
   }
 
@@ -551,7 +551,7 @@ void InMemArraysTATPDB<IndexType>::get_access_data(int s_id,
   data4->assign(airow->data4);
   tx3_succ++;
 
-  std::cout << "TX3 END" << std::endl;
+  // std::cout << "TX3 END" << std::endl;
   return;
 }
 
@@ -563,7 +563,7 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
 
   tx4_total++;
 
-  std::cout << "TX4" << std::endl;
+  // std::cout << "TX4" << std::endl;
 
   /////////
   std::unique_lock lock(s_mutex_);
@@ -574,7 +574,7 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
 
   void *out;
   if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) {
-    std::cout << "TX4 END" << std::endl;
+    // std::cout << "TX4 END" << std::endl;
     return;
   }
 
@@ -587,7 +587,7 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
   void *out2;
   if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out2, (void*) sf_heap_, sizeof(SFRow))
       == false) {
-    std::cout << "TX4 END" << std::endl;
+    // std::cout << "TX4 END" << std::endl;
     return;
   }
 
@@ -598,7 +598,7 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
   sf_rowid->data_a = data_a;
   tx4_succ++;
 
-  std::cout << "TX4 END" << std::endl;
+  // std::cout << "TX4 END" << std::endl;
   return;
 }
 
@@ -608,7 +608,7 @@ void InMemArraysTATPDB<IndexType>::update_location(const std::string &sub_nbr,
 
   tx5_total++;
 
-  std::cout << "TX5" << std::endl;
+  // std::cout << "TX5" << std::endl;
 
   ////////////
   std::unique_lock lock(s_mutex_);
@@ -621,7 +621,7 @@ void InMemArraysTATPDB<IndexType>::update_location(const std::string &sub_nbr,
 
   void *out;
   if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) {
-    std::cout << "TX5 END" << std::endl;
+    // std::cout << "TX5 END" << std::endl;
     return;
   }
 
@@ -629,7 +629,7 @@ void InMemArraysTATPDB<IndexType>::update_location(const std::string &sub_nbr,
   srow->vlr_location = vlr_location;
   tx5_succ++;
 
-  std::cout << "TX5 END" << std::endl;
+  // std::cout << "TX5 END" << std::endl;
   return;
 }
 
@@ -641,7 +641,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
                                                           std::string numberx) {
   tx6_total++;
 
-  std::cout << "TX6" << std::endl;
+  // std::cout << "TX6" << std::endl;
 
   //////
   std::shared_lock lock(s_mutex_);
@@ -655,7 +655,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
   int s_id = std::stoi(sub_nbr);
   void *out;
   if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) {
-    std::cout << "TX6" << std::endl;
+    // std::cout << "TX6" << std::endl;
     return;
   }
 
@@ -668,7 +668,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
   void *out2;
   if (sf_index_.search(to_sf_compound_key(s_id, sf_type), &out2, (void*) sf_heap_, sizeof(SFRow))
       == false) {
-    std::cout << "TX6 END" << std::endl;
+    // std::cout << "TX6 END" << std::endl;
     return;
   }
   SFRow *sfrow = (SFRow *) out2;
@@ -680,7 +680,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
   void *out3;
   if (cf_index_.search(to_cf_compound_key(s_id, sf_type, start_time), &out3, (void*) cf_heap_, sizeof(CFRow))
       == false) {
-    std::cout << "TX6 END" << std::endl;
+    // std::cout << "TX6 END" << std::endl;
     return;
   }
 
@@ -694,7 +694,7 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
 
   tx6_succ++;
 
-  std::cout << "TX6 END" << std::endl;
+  // std::cout << "TX6 END" << std::endl;
   return;
 }
 
@@ -705,7 +705,7 @@ void InMemArraysTATPDB<IndexType>::delete_call_forwarding(const std::string &sub
 
   tx7_total++;
 
-  std::cout << "TX7" << std::endl;
+  // std::cout << "TX7" << std::endl;
 
   //////
   std::shared_lock lock(s_mutex_);
@@ -717,7 +717,7 @@ void InMemArraysTATPDB<IndexType>::delete_call_forwarding(const std::string &sub
   int s_id = std::stoi(sub_nbr);
   void *out;
   if (s_index_.search(s_id, &out, (void*) s_heap_, sizeof(SRow)) == false) {
-    std::cout << "TX7 END" << std::endl;
+    // std::cout << "TX7 END" << std::endl;
     return;
   }
 
@@ -731,7 +731,7 @@ void InMemArraysTATPDB<IndexType>::delete_call_forwarding(const std::string &sub
     tx7_succ++;
   }
 
-  std::cout << "TX7 END" << std::endl;
+  // std::cout << "TX7 END" << std::endl;
   return;
 }
 
