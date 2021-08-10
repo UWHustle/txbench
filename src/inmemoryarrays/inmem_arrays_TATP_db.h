@@ -450,7 +450,7 @@ void InMemArraysTATPDB<IndexType>::get_subscriber_data(int s_id,
 
   //////
 #if lockenabled == 1
- std::cout << "TX1 lockeeed" << std::endl;
+// std::cout << "TX1 lockeeed" << std::endl;
   std::shared_lock lock(s_mutex_);
 #endif
   //////
