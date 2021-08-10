@@ -18,7 +18,7 @@ double Benchmark::run() {
     std::cout << "Loading done" << std::endl;
   }
 
-  std::vector<std::unique_ptr<Worker>> workers;
+  std::vector<std::unique_ptr<Worker> > workers;
   workers.reserve(num_workers_);
 
   for (size_t i = 0; i < num_workers_; ++i) {
@@ -52,7 +52,7 @@ double Benchmark::run() {
   }
 
   uint32_t measure_commit_count = total_commit_count - warmup_commit_count;
-  double tps = (double)measure_commit_count / (double)measure_duration_;
+  double tps = (double) measure_commit_count / (double) measure_duration_;
 
   return tps;
 }

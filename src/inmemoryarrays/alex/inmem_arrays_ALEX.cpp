@@ -4,6 +4,8 @@
 #include <iostream>
 #include <memory>
 
+#define lockenabled 1
+
 int main(int argc, char **argv) {
   auto server = std::make_unique<InMemArraysTATPServer<AlexIndex>>();
   std::shared_ptr<InMemArraysTATPDB<AlexIndex>> db = server->db_;

@@ -25,6 +25,7 @@ target_include_directories(inmemarrays_alex
         PRIVATE ${CMAKE_SOURCE_DIR}/src
         PRIVATE Threads::Threads)
 
+target_compile_definitions(inmemarrays_alex PRIVATE lockenabled=1)
 
 #############
 
@@ -45,7 +46,7 @@ target_include_directories(inmemarrays_art
         PRIVATE ${CMAKE_SOURCE_DIR}/src
         PRIVATE Threads::Threads)
 
-
+target_compile_definitions(inmemarrays_art PRIVATE lockenabled=1)
 #############
 
 add_executable(
@@ -64,5 +65,43 @@ target_link_libraries(inmemarrays_btree2
 target_include_directories(inmemarrays_btree2
         PRIVATE ${CMAKE_SOURCE_DIR}/src)
 
+target_compile_definitions(inmemarrays_btree2 PRIVATE lockenabled=1)
+#############
 
+add_executable(
+        inmemarrays_threadskv
+        Index.h
+        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+        threadskv/threadskv10.h threadskv/threadskv10.c
+        threadskv/inmem_arrays_THREADSKV.cpp
+)
+
+target_link_libraries(inmemarrays_threadskv
+        PRIVATE Threads::Threads
+        txbench_tatp)
+
+target_include_directories(inmemarrays_threadskv
+        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+target_compile_definitions(inmemarrays_threadskv PRIVATE lockenabled=1)
+
+#############
+
+add_executable(
+        inmemarrays_bw
+        Index.h
+        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+        bw/BWIndex.h bw/BWIndex.cpp
+        bw/BwTree/src/bwtree.h bw/BwTree/src/bwtree.cpp
+        bw/inmem_arrays_BW.cpp
+)
+
+target_link_libraries(inmemarrays_bw
+        PRIVATE Threads::Threads
+        txbench_tatp)
+
+target_include_directories(inmemarrays_bw
+        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+target_compile_definitions(inmemarrays_bw PRIVATE lockenabled=0)
 

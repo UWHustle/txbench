@@ -449,7 +449,10 @@ void InMemArraysTATPDB<IndexType>::get_subscriber_data(int s_id,
   // std::cout << "TX1" << std::endl;
 
   //////
+#if lockenabled == 1
+ std::cout << "TX1 lockeeed" << std::endl;
   std::shared_lock lock(s_mutex_);
+#endif
   //////
 
   void *out;
@@ -492,8 +495,10 @@ void InMemArraysTATPDB<IndexType>::get_new_destination(int s_id,
   // std::cout << "TX2" << std::endl;
 
   /////
+#if lockenabled == 1
   std::shared_lock lock(sf_mutex_);
   std::shared_lock lock1(cf_mutex_);
+#endif
   /////
 
   void *out = nullptr;
@@ -533,7 +538,9 @@ void InMemArraysTATPDB<IndexType>::get_access_data(int s_id,
   // std::cout << "TX3" << std::endl;
 
   ////
+#if lockenabled == 1
   std::shared_lock lock(ai_mutex_);
+#endif
   ///
 
   void *out;
@@ -566,7 +573,9 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
   // std::cout << "TX4" << std::endl;
 
   /////////
+#if lockenabled == 1
   std::unique_lock lock(s_mutex_);
+#endif
   /////////
 
   // UPDATE Subscriber SET bit_1 = <bit_rnd>
@@ -580,7 +589,9 @@ void InMemArraysTATPDB<IndexType>::update_subscriber_data(int s_id,
 
   SRow *srow = (SRow *) out;
 
+#if lockenabled == 1
   std::unique_lock lock1(sf_mutex_);
+#endif
 
   // UPDATE Special_Facility SET data_a = <data_a rnd>
   // WHERE s_id = <s_id value subid> AND sf_type = <sf_type rnd>;
@@ -611,7 +622,9 @@ void InMemArraysTATPDB<IndexType>::update_location(const std::string &sub_nbr,
   // std::cout << "TX5" << std::endl;
 
   ////////////
+#if lockenabled == 1
   std::unique_lock lock(s_mutex_);
+#endif
   ///////////
 
   // UPDATE Subscriber SET vlr_location = <vlr_location rnd>
@@ -644,9 +657,11 @@ void InMemArraysTATPDB<IndexType>::insert_call_forwarding(std::string sub_nbr,
   // std::cout << "TX6" << std::endl;
 
   //////
+#if lockenabled == 1
   std::shared_lock lock(s_mutex_);
   std::shared_lock lock1(sf_mutex_);
   std::unique_lock lock2(cf_mutex_);
+#endif
   //////
 
   // SELECT <s_id bind subid s_id> FROM Subscriber
@@ -708,8 +723,10 @@ void InMemArraysTATPDB<IndexType>::delete_call_forwarding(const std::string &sub
   // std::cout << "TX7" << std::endl;
 
   //////
+#if lockenabled == 1
   std::shared_lock lock(s_mutex_);
   std::unique_lock lock1(cf_mutex_);
+#endif
   //////
 
   // SELECT <s_id bind subid s_id> FROM Subscriber
