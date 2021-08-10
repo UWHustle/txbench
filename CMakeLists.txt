@@ -3,21 +3,21 @@ project(txbench)
 
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS "-fpermissive")
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
+#set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
 
 include(FetchContent)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 find_package(Threads REQUIRED)
 
-if(MSVC)
-    set(CMAKE_CXX_FLAGS "/O2 /arch:AVX2 /W1 /EHsc")
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
-    set(CMAKE_CXX_FLAGS "-O3 -xHost")
-else()
+#if(MSVC)
+#    set(CMAKE_CXX_FLAGS "/O2 /arch:AVX2 /W1 /EHsc")
+#elseif (CMAKE_CXX_COMPILER_ID STREQUAL "Intel")
+#    set(CMAKE_CXX_FLAGS "-O3 -xHost")
+#else()
     # clang and gcc
     set(CMAKE_CXX_FLAGS "-O3 -march=native")
-endif()
+#endif()
 
 #set(Boost_USE_STATIC_LIBS OFF)
 #set(Boost_USE_MULTITHREADED ON)
@@ -33,10 +33,10 @@ endif()
 #set(GFLAG_INCLUDE_DIRS /usr/local/Cellar/gflags/2.2.2/include)
 #set(JEMALLOC_INCLUDE_DIRS /usr/local/Cellar/jemalloc/5.2.1_1/include)
 
-link_directories(/usr/local/Cellar/boost/1.72.0_1/lib/)
-link_directories(${GLOG_INCLUDE_DIRS}/../lib)
+#link_directories(/usr/local/Cellar/boost/1.72.0_1/lib/)
+#link_directories(${GLOG_INCLUDE_DIRS}/../lib)
 
-add_compile_options(-mavx2 -O3 -mlzcnt -march=native)
+#add_compile_options(-mavx2 -O3 -mlzcnt -march=native)
 
 FetchContent_Declare(
         cxxopts
