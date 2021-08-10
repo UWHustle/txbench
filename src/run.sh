@@ -24,7 +24,7 @@ for s in ${sizes}; do
   for w in ${workers}; do
     for t in ${times}; do
     outfile=${1}"_txbench_ART_"${s}"_"${w}"_"${t}
-    ./build/src/inmemoryarrays/inmemarrays_ART --num_rows ${s} --num_workers ${w} --measure_duration ${t} 2>&1 >"${outfolder}/${outfile}_wip" && mv "${outfolder}/${outfile}_wip" "${outfolder}/${outfile}" &
+    ./build/src/inmemoryarrays/inmemarrays_ART --num_rows ${s} --num_workers ${w} --measure_duration ${t} 2>&1 >"${outfolder}/${outfile}_wip" && mv "${outfolder}/${outfile}_wip" "${outfolder}/${outfile}"
   done
 done
 
@@ -32,7 +32,7 @@ for s in ${sizes}; do
   for w in ${workers}; do
     for t in ${times}; do
     outfile=${1}"_txbench_ALEX_"${s}"_"${w}"_"${t}
-    ./build/src/inmemoryarrays/inmemarrays_ALEX --num_rows ${s} --num_workers ${w} --measure_duration ${t} 2>&1 >"${outfolder}/${outfile}_wip" && mv "${outfolder}/${outfile}_wip" "${outfolder}/${outfile}" &
+    ./build/src/inmemoryarrays/inmemarrays_ALEX --num_rows ${s} --num_workers ${w} --measure_duration ${t} 2>&1 >"${outfolder}/${outfile}_wip" && mv "${outfolder}/${outfile}_wip" "${outfolder}/${outfile}"
   done
 done
 
@@ -40,6 +40,6 @@ for s in ${sizes}; do
   for w in ${workers}; do
     for t in ${times}; do
     outfile=${1}"_txbench_BW_"${s}"_"${w}"_"${t}
-    ./build/src/inmemoryarrays/inmemarrays_BW --num_rows ${s} --num_workers ${w} --measure_duration ${t} 2>&1 >"${outfolder}/${outfile}_wip" && mv "${outfolder}/${outfile}_wip" "${outfolder}/${outfile}" &
+    ./build/src/inmemoryarrays/inmemarrays_BW --num_rows ${s} --num_workers ${w} --measure_duration ${t} 2>&1 >"${outfolder}/${outfile}_wip" && mv "${outfolder}/${outfile}_wip" "${outfolder}/${outfile}"
   done
 done
