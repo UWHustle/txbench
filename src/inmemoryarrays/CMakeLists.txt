@@ -49,41 +49,41 @@ target_include_directories(inmemarrays_art
 target_compile_definitions(inmemarrays_art PRIVATE lockenabled=1)
 #############
 
-add_executable(
-        inmemarrays_btree2
-        Index.h
-        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
-        btree2/Btree2Index.h btree2/Btree2Index.cpp
-        btree2/inmem_arrays_BTREE2.cpp
-        btree2/btree2v.c btree2/btree2v.h
-)
-
-target_link_libraries(inmemarrays_btree2
-        PRIVATE Threads::Threads
-        txbench_tatp)
-
-target_include_directories(inmemarrays_btree2
-        PRIVATE ${CMAKE_SOURCE_DIR}/src)
-
-target_compile_definitions(inmemarrays_btree2 PRIVATE lockenabled=1)
+#add_executable(
+#        inmemarrays_btree2
+#        Index.h
+#        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+#        btree2/Btree2Index.h btree2/Btree2Index.cpp
+#        btree2/inmem_arrays_BTREE2.cpp
+#        btree2/btree2v.c btree2/btree2v.h
+#)
+#
+#target_link_libraries(inmemarrays_btree2
+#        PRIVATE Threads::Threads
+#        txbench_tatp)
+#
+#target_include_directories(inmemarrays_btree2
+#        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+#
+#target_compile_definitions(inmemarrays_btree2 PRIVATE lockenabled=1)
 #############
 
-add_executable(
-        inmemarrays_threadskv
-        Index.h
-        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
-        threadskv/threadskv10.h threadskv/threadskv10.c
-        threadskv/inmem_arrays_THREADSKV.cpp
-)
-
-target_link_libraries(inmemarrays_threadskv
-        PRIVATE Threads::Threads
-        txbench_tatp)
-
-target_include_directories(inmemarrays_threadskv
-        PRIVATE ${CMAKE_SOURCE_DIR}/src)
-
-target_compile_definitions(inmemarrays_threadskv PRIVATE lockenabled=1)
+#add_executable(
+#        inmemarrays_threadskv
+#        Index.h
+#        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+#        threadskv/threadskv10.h threadskv/threadskv10.c
+#        threadskv/inmem_arrays_THREADSKV.cpp
+#)
+#
+#target_link_libraries(inmemarrays_threadskv
+#        PRIVATE Threads::Threads
+#        txbench_tatp)
+#
+#target_include_directories(inmemarrays_threadskv
+#        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+#
+#target_compile_definitions(inmemarrays_threadskv PRIVATE lockenabled=1)
 
 #############
 

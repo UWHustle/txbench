@@ -36,7 +36,7 @@ endif()
 link_directories(/usr/local/Cellar/boost/1.72.0_1/lib/)
 link_directories(${GLOG_INCLUDE_DIRS}/../lib)
 
-add_compile_options(-mavx2 -O3 -mlzcnt)
+add_compile_options(-mavx2 -O3 -mlzcnt -march=native)
 
 FetchContent_Declare(
         cxxopts
