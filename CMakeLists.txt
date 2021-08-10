@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.15)
 project(txbench)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS "-fpermissive")
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)
@@ -38,29 +39,8 @@ find_package(Threads REQUIRED)
 
 #add_compile_options(-mavx2 -O3 -mlzcnt -march=native)
 
-#FIND_LIBRARY(GCCLIBATOMIC_LIBRARY NAMES atomic atomic.so.1 libatomic.so.1
-#        HINTS
-#        $ENV{HOME}/local/lib64
-#        $ENV{HOME}/local/lib
-#        /usr/local/lib64
-#        /usr/local/lib
-#        /opt/local/lib64
-#        /opt/local/lib
-#        /usr/lib64
-#        /usr/lib
-#        /lib64
-#        /lib
-#        )
-#
-#IF (GCCLIBATOMIC_LIBRARY)
-#    SET(GCCLIBATOMIC_FOUND TRUE)
-#    MESSAGE(STATUS "Found GCC's libatomic.so: lib=${GCCLIBATOMIC_LIBRARY}")
-#ELSE ()
-#    SET(GCCLIBATOMIC_FOUND FALSE)
-#    MESSAGE(STATUS "GCC's libatomic.so not found. This library is essential in AArch64 (if you are on x86, this doesn't matter)")
-#    MESSAGE(STATUS "Try: 'sudo yum install libatomic' (or sudo apt-get install libatomic1)")
-#ENDIF ()
-
+# We need gcc's libatomic.so for AArch64. It's not required on x86.
+find_package(GccAtomic)
 
 FetchContent_Declare(
         cxxopts
