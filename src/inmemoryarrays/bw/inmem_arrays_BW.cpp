@@ -3,6 +3,7 @@
 #include "BWIndex.h"
 #include <iostream>
 #include <memory>
+#include <atomic>
 
 //#define lockenabled 1
 

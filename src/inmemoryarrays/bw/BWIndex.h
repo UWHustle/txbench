@@ -3,6 +3,7 @@
 
 #include "../Index.h"
 #include "BwTree/src/bwtree.h"
+#include <atomic>
 
 using namespace wangziqi2013::bwtree;
 //
