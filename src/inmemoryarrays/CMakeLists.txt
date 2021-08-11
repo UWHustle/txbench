@@ -106,3 +106,23 @@ target_include_directories(inmemarrays_bw
 
 target_compile_definitions(inmemarrays_bw PRIVATE lockenabled=0)
 
+##############
+
+add_executable(
+        inmemarrays_artolc
+        Index.h
+        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+        artsync/ARTSynchronized/OptimisticLockCoupling/Tree.h
+        artsync/ARTSynchronized/OptimisticLockCoupling/Tree.cpp
+        artsync/inmem_arrays_ARTOLC.cpp
+)
+
+target_link_libraries(inmemarrays_artolc
+        PRIVATE Threads::Threads
+        txbench_tatp
+        ${TbbLib} ${JemallocLib})
+
+target_include_directories(inmemarrays_artolc
+        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+
+target_compile_definitions(inmemarrays_artolc PRIVATE lockenabled=0)

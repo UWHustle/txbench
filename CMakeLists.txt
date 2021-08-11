@@ -42,6 +42,11 @@ find_package(Threads REQUIRED)
 # We need gcc's libatomic.so for AArch64. It's not required on x86.
 find_package(GccAtomic)
 
+#find_package(TBB COMPONENTS tbbmalloc tbbmalloc_proxy tbb_preview)
+
+find_library(JemallocLib jemalloc)
+find_library(TbbLib tbb)
+
 FetchContent_Declare(
         cxxopts
         GIT_REPOSITORY https://github.com/jarro2783/cxxopts.git
