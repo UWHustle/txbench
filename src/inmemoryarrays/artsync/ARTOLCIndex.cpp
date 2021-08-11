@@ -2,6 +2,14 @@
 
 #include "../inmem_arrays_TATP_db.h"
 
+void loadKey2(TID tid, Key &key) {
+  // Store the key of the tuple into the key vector
+  // Implementation is database specific
+  key.setKeyLen(sizeof(tid));
+  reinterpret_cast<uint64_t *>(&key[0])[0] = __builtin_bswap64(tid);
+}
+
+
 bool ARTOLCIterator::equal(IndexIterator *iter2) {
   return true; //iter_ == ((ARTOLCIndex *) iter2)->iter_;
 }

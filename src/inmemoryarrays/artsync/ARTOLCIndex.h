@@ -17,17 +17,12 @@ class ARTOLCIterator : public IndexIterator {
 
 };
 
-void loadKey(TID tid, Key &key) {
-  // Store the key of the tuple into the key vector
-  // Implementation is database specific
-  key.setKeyLen(sizeof(tid));
-  reinterpret_cast<uint64_t *>(&key[0])[0] = __builtin_bswap64(tid);
-}
+void loadKey2(TID tid, Key &key);
 
 class ARTOLCIndex : public Index {
  public:
 
-  ARTOLCIndex() index_({loadKey}){}
+  ARTOLCIndex(): index_({loadKey}){}
 
   ~ARTOLCIndex() {}
 
