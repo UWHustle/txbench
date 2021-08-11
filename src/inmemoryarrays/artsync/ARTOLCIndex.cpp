@@ -24,17 +24,18 @@ void ARTOLCIterator::getval(void **val) {
 }
 
 bool ARTOLCIndex::insert(int key, void *value, int rowid) {
-  //index_.insert(key, value);
+//  loadKey2(keys[i], key);
+  index_.insert(key, rowid);
   return true;
 }
 
 bool ARTOLCIndex::search(int key, void **value, void* heapbase, int rowsize_bytes) {
-//  void **out = index_.get_payload(key);
-//  if (out == nullptr) {
+  auto rowid = index_.lookup(key);
+  if (rowid == 0) {
     return false;
-//  }
-//  *value = *out;
-//  return true;
+  }
+  *value = (heapbase + rowsize_bytes*rowid);
+  return true;
 }
 
 bool ARTOLCIndex::remove(int key) {
