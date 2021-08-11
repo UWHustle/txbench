@@ -1,0 +1,69 @@
+#include "ARTOLCIndex.h"
+
+#include "../inmem_arrays_TATP_db.h"
+
+bool ARTOLCIterator::equal(IndexIterator *iter2) {
+  return true; //iter_ == ((ARTOLCIndex *) iter2)->iter_;
+}
+
+bool ARTOLCIterator::next() {
+  //iter_++;
+  return false;// !iter_.is_end();
+}
+
+void ARTOLCIterator::getval(void **val) {
+  //*val = iter_.payload();
+}
+
+bool ARTOLCIndex::insert(int key, void *value, int rowid) {
+  //index_.insert(key, value);
+  return true;
+}
+
+bool ARTOLCIndex::search(int key, void **value, void* heapbase, int rowsize_bytes) {
+//  void **out = index_.get_payload(key);
+//  if (out == nullptr) {
+    return false;
+//  }
+//  *value = *out;
+//  return true;
+}
+
+bool ARTOLCIndex::remove(int key) {
+//  if (index_.erase_one(key) > 0) { return true; }
+  return false;
+}
+
+IndexIterator *ARTOLCIndex::lower_bound(int key) {
+//  ARTOLCIndex *iter = new ARTOLCIndex(index_.lower_bound(key));
+  return nullptr;
+}
+
+IndexIterator *ARTOLCIndex::upper_bound(int key) {
+//  ARTOLCIndex *iter = new ARTOLCIndex(index_.upper_bound(key));
+  return nullptr;
+}
+
+int ARTOLCIndex::count_range(int s_id,
+                           int sf_type,
+                           int start_time,
+                           int end_time) {
+  int count = 0;
+
+//  IndexIterator
+//      *cfiter_l = lower_bound(to_cf_compound_key(s_id, sf_type, 0));
+//  IndexIterator *cfiter_u =
+//      upper_bound(to_cf_compound_key(s_id, sf_type, start_time + 1));
+//
+//  while (!cfiter_l->equal(cfiter_u)) {
+//    void *val;
+//    cfiter_l->getval(&val);
+//    CFRow *cfrow = (CFRow *) val;
+//    if (cfrow->end_time > end_time) {
+//      count++;
+//    }
+//    cfiter_l->next();
+//  };
+
+  return count;
+}
