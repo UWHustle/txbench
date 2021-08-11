@@ -114,6 +114,7 @@ add_executable(
         inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
         artsync/ARTSynchronized/OptimisticLockCoupling/Tree.h
         artsync/ARTSynchronized/OptimisticLockCoupling/Tree.cpp
+        artsync/ARTOLCIndex.h artsync/ARTOLCIndex.cpp
         artsync/inmem_arrays_ARTOLC.cpp
 )
 
