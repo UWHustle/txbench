@@ -61,7 +61,7 @@ int ARTOLCIndex::count_range(int s_id,
 
 //  IndexIterator
 //      *cfiter_l = lower_bound(to_cf_compound_key(s_id, sf_type, 0));
-//  IndexIterator *cfiter_u =
+//  IndexIterator *cfiter_u =\
 //      upper_bound(to_cf_compound_key(s_id, sf_type, start_time + 1));
 //
 //  while (!cfiter_l->equal(cfiter_u)) {
