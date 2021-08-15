@@ -12,7 +12,7 @@
 #include "../Key.h"
 #include "../Epoche.h"
 
-using TID = uint64_t;
+using TID = uint32_t;
 
 using namespace ART;
 namespace ART_OLC {

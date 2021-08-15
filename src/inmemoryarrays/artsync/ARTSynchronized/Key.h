@@ -48,6 +48,7 @@ public:
 
 
 inline uint8_t &Key::operator[](std::size_t i) {
+    std::cout <<" i, len " << i, len << std::endl;
     assert(i < len);
     return data[i];
 }
