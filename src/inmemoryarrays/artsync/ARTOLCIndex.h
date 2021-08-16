@@ -17,6 +17,10 @@ class ARTOLCIterator : public IndexIterator {
 
 };
 
+extern int32_t *s_g_keys_;
+extern int32_t *ai_g_keys_;
+extern int32_t *sf_g_keys_;
+extern int32_t *cf_g_keys_;
 
 void loadKey_tatp_s(TID tid, Key &key);
 void loadKey_tatp_ai(TID tid, Key &key);
