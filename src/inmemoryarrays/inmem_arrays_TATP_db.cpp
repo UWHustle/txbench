@@ -102,6 +102,7 @@ int to_cf_compound_key(int s_id, int sf_type, int start_time) {
   return (s_id * 100) + (sf_type * 10) + (start_time / 8);
 }
 
+
 int cf_compound_key_to_s_id(int cf_key) {
   return cf_key / 100;
 }

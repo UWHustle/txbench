@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 #include <array>
-#include<shared_mutex>
+#include <shared_mutex>
 
 struct SRow {
 // public:
@@ -40,12 +40,6 @@ struct SRow {
        int mtx_row_id);
 
   SRow() {}
-
-//  friend std::ostream& operator<<(std::ostream &os, const SRow& n)
-//  {
-//    os << "SROW - " << n.s_id;
-//    return os;
-//  }
 
 };
 
@@ -179,10 +173,10 @@ class InMemArraysTATPDB {
     sf_heap_ = new SFRow[num_rows_ * 12];
     cf_heap_ = new CFRow[num_rows_ * 12];
 
-    s_index_ = new IndexType(num_rows_);
-    ai_index_ = new IndexType(num_rows_);
-    cf_index_ = new IndexType(num_rows_);
-    sf_index_ = new IndexType(num_rows_);
+    s_index_ = new IndexType(num_rows_, "s");
+    ai_index_ = new IndexType(num_rows_, "ai");
+    cf_index_ = new IndexType(num_rows_, "cf");
+    sf_index_ = new IndexType(num_rows_, "sf");
   }
 
   void print_stats();
