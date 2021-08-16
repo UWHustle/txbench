@@ -5,6 +5,7 @@
 #include <cstring>
 #include <memory>
 #include <assert.h>
+#include <iostream>
 
 using KeyLen = uint32_t;
 
