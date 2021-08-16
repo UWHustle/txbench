@@ -9,7 +9,7 @@ void loadKey_tatp(TID tid, Key &key, int32_t* arr) {
   key.set((char*)arr[tid], sizeof(int32_t));
 }
 
-void loadKey_tatp_s(TID tid, Key &key); {
+void loadKey_tatp_s(TID tid, Key &key) {
   key.setKeyLen(sizeof(int32_t));
   key.set((char*) s_g_keys_[tid], sizeof(int32_t));
 }
