@@ -8,45 +8,45 @@ add_subdirectory(art)
 
 ##############
 
-add_executable(
-        inmemarrays_alex
-        Index.h
-        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
-        alex/AlexIndex.h alex/AlexIndex.cpp
-        alex/inmem_arrays_ALEX.cpp
-)
-
-target_link_libraries(inmemarrays_alex
-        PRIVATE Threads::Threads
-        txbench_tatp
-        alex_lib)
-
-target_include_directories(inmemarrays_alex
-        PRIVATE ${CMAKE_SOURCE_DIR}/src
-        PRIVATE Threads::Threads)
-
-target_compile_definitions(inmemarrays_alex PRIVATE lockenabled=1)
+#add_executable(
+#        inmemarrays_alex
+#        Index.h
+#        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+#        alex/AlexIndex.h alex/AlexIndex.cpp
+#        alex/inmem_arrays_ALEX.cpp
+#)
+#
+#target_link_libraries(inmemarrays_alex
+#        PRIVATE Threads::Threads
+#        txbench_tatp
+#        alex_lib)
+#
+#target_include_directories(inmemarrays_alex
+#        PRIVATE ${CMAKE_SOURCE_DIR}/src
+#        PRIVATE Threads::Threads)
+#
+#target_compile_definitions(inmemarrays_alex PRIVATE lockenabled=1)
 
 #############
 
-add_executable(
-        inmemarrays_art
-        Index.h
-        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
-        art/ARTIndex.h art/ARTIndex.cpp
-        art/inmem_arrays_ART.cpp
-)
-
-target_link_libraries(inmemarrays_art
-        PRIVATE Threads::Threads
-        txbench_tatp
-        art_lib)
-
-target_include_directories(inmemarrays_art
-        PRIVATE ${CMAKE_SOURCE_DIR}/src
-        PRIVATE Threads::Threads)
-
-target_compile_definitions(inmemarrays_art PRIVATE lockenabled=1)
+#add_executable(
+#        inmemarrays_art
+#        Index.h
+#        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+#        art/ARTIndex.h art/ARTIndex.cpp
+#        art/inmem_arrays_ART.cpp
+#)
+#
+#target_link_libraries(inmemarrays_art
+#        PRIVATE Threads::Threads
+#        txbench_tatp
+#        art_lib)
+#
+#target_include_directories(inmemarrays_art
+#        PRIVATE ${CMAKE_SOURCE_DIR}/src
+#        PRIVATE Threads::Threads)
+#
+#target_compile_definitions(inmemarrays_art PRIVATE lockenabled=1)
 #############
 
 #add_executable(
@@ -87,24 +87,24 @@ target_compile_definitions(inmemarrays_art PRIVATE lockenabled=1)
 
 #############
 
-add_executable(
-        inmemarrays_bw
-        Index.h
-        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
-        bw/BWIndex.h bw/BWIndex.cpp
-        bw/BwTree/src/bwtree.h bw/BwTree/src/bwtree.cpp
-        bw/inmem_arrays_BW.cpp
-)
-
-target_link_libraries(inmemarrays_bw
-        PRIVATE Threads::Threads
-        PRIVATE ${GCCLIBATOMIC_LIBRARY}
-        txbench_tatp)
-
-target_include_directories(inmemarrays_bw
-        PRIVATE ${CMAKE_SOURCE_DIR}/src)
-
-target_compile_definitions(inmemarrays_bw PRIVATE lockenabled=0)
+#add_executable(
+#        inmemarrays_bw
+#        Index.h
+#        inmem_arrays_TATP_db.h inmem_arrays_TATP_db.cpp
+#        bw/BWIndex.h bw/BWIndex.cpp
+#        bw/BwTree/src/bwtree.h bw/BwTree/src/bwtree.cpp
+#        bw/inmem_arrays_BW.cpp
+#)
+#
+#target_link_libraries(inmemarrays_bw
+#        PRIVATE Threads::Threads
+#        PRIVATE ${GCCLIBATOMIC_LIBRARY}
+#        txbench_tatp)
+#
+#target_include_directories(inmemarrays_bw
+#        PRIVATE ${CMAKE_SOURCE_DIR}/src)
+#
+#target_compile_definitions(inmemarrays_bw PRIVATE lockenabled=0)
 
 ##############
 
