@@ -3,7 +3,10 @@
 #include "../inmem_arrays_TATP_db.h"
 
 
-
+int32_t *s_g_keys_;
+int32_t *ai_g_keys_;
+int32_t *sf_g_keys_;
+int32_t *cf_g_keys_;
 
 void loadKey_tatp(TID tid, Key &key, int32_t* arr) {
   // Store the key of the tuple into the key vector
