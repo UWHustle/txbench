@@ -27,7 +27,7 @@ class AlexIterator : public IndexIterator {
 class AlexIndex : public Index {
  public:
 
-  AlexIndex() {}
+  AlexIndex(int num_rows) : Index(num_rows) {}
 
   ~AlexIndex() {}
 

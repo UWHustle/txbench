@@ -2,11 +2,11 @@
 
 #include "../inmem_arrays_TATP_db.h"
 
-void loadKey2(TID tid, Key &key) {
+void loadKey_tatp(TID tid, Key &key, int32_t* arr) {
   // Store the key of the tuple into the key vector
   // Implementation is database specific
-  key.setKeyLen(sizeof(tid));
-  reinterpret_cast<uint64_t *>(&key[0])[0] = __builtin_bswap64(tid);
+  key.setKeyLen(sizeof(int32_t));
+  key.set((char[])arr[tid], sizeof(int32_t));
 }
 
 

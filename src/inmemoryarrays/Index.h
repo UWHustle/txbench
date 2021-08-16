@@ -14,7 +14,7 @@ class IndexIterator {
 
 class Index {
  public:
-  Index() {};
+  Index(int num_rows) {};
 
   ~Index() {};
 
