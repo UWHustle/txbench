@@ -64,7 +64,7 @@ class BWIterator : public IndexIterator {
 class BWIndex : public Index {
  public:
 
-  BWIndex() {
+  BWIndex(int numrows) {
     index_ = new BwTreeType{true,
                                 KeyComparator1{1},
                                 KeyEqualityChecker1{1}};
