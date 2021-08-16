@@ -9,7 +9,7 @@
 
 namespace ART_OLC {
 
-    Tree::Tree(LoadKeyFunction loadKey, int32_t* arr) : root(new N256( nullptr, 0)), loadKey(loadKey), arr(arr) {
+    Tree::Tree(LoadKeyFunction loadKey) : root(new N256( nullptr, 0)), loadKey(loadKey){
     }
 
     Tree::~Tree() {
@@ -315,7 +315,7 @@ namespace ART_OLC {
             break;
         }
         if (toContinue != 0) {
-            loadKey(toContinue, continueKey, arr);
+            loadKey(toContinue, continueKey);
             return true;
         } else {
             return false;
@@ -325,7 +325,7 @@ namespace ART_OLC {
 
     TID Tree::checkKey(const TID tid, const Key &k) const {
         Key kt;
-        this->loadKey(tid, kt, arr);
+        this->loadKey(tid, kt);
         if (k == kt) {
             return tid;
         }
@@ -411,7 +411,7 @@ namespace ART_OLC {
                 if (needRestart) goto restart;
 
                 Key key;
-                loadKey(N::getLeaf(nextNode), key, arr);
+                loadKey(N::getLeaf(nextNode), key);
 
                 level++;
                 uint32_t prefixLength = 0;
@@ -555,7 +555,7 @@ namespace ART_OLC {
                 if (i == maxStoredPrefixLength) {
                     auto anyTID = N::getAnyChildTid(n, needRestart);
                     if (needRestart) return CheckPrefixPessimisticResult::Match;
-                    loadKey(anyTID, kt, arr);
+                    loadKey(anyTID, kt);
                 }
                 uint8_t curKey = i >= maxStoredPrefixLength ? kt[level] : n->getPrefix()[i];
                 if (curKey != k[level]) {
@@ -564,7 +564,7 @@ namespace ART_OLC {
                         if (i < maxStoredPrefixLength) {
                             auto anyTID = N::getAnyChildTid(n, needRestart);
                             if (needRestart) return CheckPrefixPessimisticResult::Match;
-                            loadKey(anyTID, kt, arr);
+                            loadKey(anyTID, kt);
                         }
                         memcpy(nonMatchingPrefix, &kt[0] + level + 1, std::min((n->getPrefixLength() - (level - prevLevel) - 1),
                                                                            maxStoredPrefixLength));
@@ -587,7 +587,7 @@ namespace ART_OLC {
                 if (i == maxStoredPrefixLength) {
                     auto anyTID = N::getAnyChildTid(n, needRestart);
                     if (needRestart) return PCCompareResults::Equal;
-                    loadKey(anyTID, kt, arr);
+                    loadKey(anyTID, kt);
                 }
                 uint8_t kLevel = (k.getKeyLen() > level) ? k[level] : fillKey;
 
@@ -611,7 +611,7 @@ namespace ART_OLC {
                 if (i == maxStoredPrefixLength) {
                     auto anyTID = N::getAnyChildTid(n, needRestart);
                     if (needRestart) return PCEqualsResults::BothMatch;
-                    loadKey(anyTID, kt, arr);
+                    loadKey(anyTID, kt);
                 }
                 uint8_t startLevel = (start.getKeyLen() > level) ? start[level] : 0;
                 uint8_t endLevel = (end.getKeyLen() > level) ? end[level] : 255;

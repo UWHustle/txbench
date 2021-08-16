@@ -12,7 +12,7 @@ namespace ART_OLC {
 
     class Tree {
     public:
-        using LoadKeyFunction = void (*)(TID tid, Key &key, int32_t* arr);
+        using LoadKeyFunction = void (*)(TID tid, Key &key);
 
     private:
         N *const root;
@@ -22,9 +22,6 @@ namespace ART_OLC {
         LoadKeyFunction loadKey;
 
         Epoche epoche{256};
-
-        int32_t* arr;
-
     public:
         enum class CheckPrefixResult : uint8_t {
             Match,
@@ -60,11 +57,11 @@ namespace ART_OLC {
 
     public:
 
-        Tree(LoadKeyFunction loadKey, int32_t* arr);
+        Tree(LoadKeyFunction loadKey);
 
         Tree(const Tree &) = delete;
 
-        Tree(Tree &&t) : root(t.root), loadKey(t.loadKey), arr(t.arr) { }
+        Tree(Tree &&t) : root(t.root), loadKey(t.loadKey) { }
 
         ~Tree();
 
