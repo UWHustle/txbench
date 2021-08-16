@@ -6,7 +6,7 @@ void loadKey_tatp(TID tid, Key &key, int32_t* arr) {
   // Store the key of the tuple into the key vector
   // Implementation is database specific
   key.setKeyLen(sizeof(int32_t));
-  key.set((char[])arr[tid], sizeof(int32_t));
+  key.set((char*)arr[tid], sizeof(int32_t));
 }
 
 
@@ -23,14 +23,23 @@ void ARTOLCIterator::getval(void **val) {
   //*val = iter_.payload();
 }
 
-bool ARTOLCIndex::insert(int key, void *value, int rowid) {
-//  loadKey2(keys[i], key);
-  index_.insert(key, rowid);
+bool ARTOLCIndex::insert(int key_int, void *value, int rowid) {
+  auto t = index_.getThreadInfo();
+  keys[keys_index_++] = key_int;
+  Key key;
+  key.setKeyLen(sizeof(int32_t));
+  key.set((char*)key_int, sizeof(int32_t));
+
+  index_.insert(key, rowid, t);
   return true;
 }
 
-bool ARTOLCIndex::search(int key, void **value, void* heapbase, int rowsize_bytes) {
-  auto rowid = index_.lookup(key);
+bool ARTOLCIndex::search(int key_int, void **value, void* heapbase, int rowsize_bytes) {
+  auto t = index_.getThreadInfo();
+  Key key;
+  key.setKeyLen(sizeof(int32_t));
+  key.set((char*)key_int, sizeof(int32_t));
+  auto rowid = index_.lookup(key, t);
   if (rowid == 0) {
     return false;
   }

@@ -23,7 +23,7 @@ class ARTOLCIndex : public Index {
  public:
 
   ARTOLCIndex(int num_rows)
-      : num_rows_(num_rows), index_({loadKey}), Index(num_rows) {
+      : num_rows_(num_rows), index_({loadKey_tatp, keys), Index(num_rows) {
     keys = new int32_t[num_rows_];
   }
 

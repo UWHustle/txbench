@@ -98,7 +98,7 @@ add_executable(
 
 target_link_libraries(inmemarrays_bw
         PRIVATE Threads::Threads
-#        PRIVATE ${GCCLIBATOMIC_LIBRARY}
+        PRIVATE ${GCCLIBATOMIC_LIBRARY}
         txbench_tatp)
 
 target_include_directories(inmemarrays_bw
