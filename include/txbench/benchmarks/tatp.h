@@ -60,6 +60,8 @@ public:
 
   // Loading functions.
 
+  virtual void clear() = 0;
+
   virtual void
   load_subscriber_batch(const std::vector<TATPSubscriberRecord> &batch) = 0;
 

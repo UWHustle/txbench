@@ -206,6 +206,9 @@ TATPBenchmark::TATPBenchmark(std::unique_ptr<TATPServer> server,
 void TATPBenchmark::load() {
   std::unique_ptr<TATPConnection> conn = server_->connect();
 
+  // Drop all relevant tables in the database, if they exist.
+  conn->clear();
+
   Generator rg;
 
   BatchedRecordLoader<TATPSubscriberRecord> subscriber_loader(
