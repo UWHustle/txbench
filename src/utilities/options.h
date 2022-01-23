@@ -1,9 +1,11 @@
-#ifndef TXBENCH_SRC_UTILITIES_OPTIONS_H
-#define TXBENCH_SRC_UTILITIES_OPTIONS_H
+#ifndef TXBENCH_OPTIONS_H
+#define TXBENCH_OPTIONS_H
 
-#include <cxxopts.hpp>
+#include "cxxopts.hpp"
+
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 typedef cxxopts::ParseResult ParseResult;
@@ -36,4 +38,4 @@ private:
   std::vector<Option> options_;
 };
 
-#endif // TXBENCH_SRC_UTILITIES_OPTIONS_H
+#endif // TXBENCH_OPTIONS_H

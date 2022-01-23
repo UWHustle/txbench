@@ -1,11 +1,12 @@
-#ifndef TXBENCH_SRC_UTILITIES_GENERATOR_H
-#define TXBENCH_SRC_UTILITIES_GENERATOR_H
+#ifndef TXBENCH_GENERATOR_H
+#define TXBENCH_GENERATOR_H
 
 #include <random>
+#include <utility>
 
-class RandomGenerator {
+class Generator {
 public:
-  RandomGenerator();
+  Generator();
 
   int random_int(int a, int b);
   size_t random_size_t(size_t a, size_t b);
@@ -16,4 +17,4 @@ private:
   std::mt19937 mt_;
 };
 
-#endif // TXBENCH_SRC_UTILITIES_GENERATOR_H
+#endif // TXBENCH_GENERATOR_H

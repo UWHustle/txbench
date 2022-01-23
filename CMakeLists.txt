@@ -1,5 +1,10 @@
 cmake_minimum_required(VERSION 3.15)
-project(txbench)
+
+project(
+        txbench
+        DESCRIPTION "A small benchmarking library for OLTP database systems"
+        VERSION 0.1.0
+)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -18,4 +23,10 @@ set(CXXOPTS_ENABLE_INSTALL OFF)
 set(CXXOPTS_ENABLE_WARNINGS OFF)
 FetchContent_MakeAvailable(cxxopts)
 
+option(TXBENCH_BUILD_EXAMPLES "Build the examples" ON)
+
 add_subdirectory(src)
+
+if (TXBENCH_BUILD_EXAMPLES)
+    add_subdirectory(examples)
+endif ()

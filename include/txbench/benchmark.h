@@ -1,9 +1,10 @@
-#ifndef TXBENCH_SRC_UTILITIES_BENCHMARK_H
-#define TXBENCH_SRC_UTILITIES_BENCHMARK_H
+#ifndef TXBENCH_BENCHMARK_H
+#define TXBENCH_BENCHMARK_H
 
 #include "worker.h"
-#include <cstdlib>
+
 #include <memory>
+#include <utility>
 
 class Benchmark {
 public:
@@ -23,4 +24,4 @@ private:
   size_t measure_duration_;
 };
 
-#endif // TXBENCH_SRC_UTILITIES_BENCHMARK_H
+#endif // TXBENCH_BENCHMARK_H
