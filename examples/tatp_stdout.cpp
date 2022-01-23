@@ -7,7 +7,7 @@
 
 class StdoutTATPConnection : public TATPConnection {
 public:
-  void clear() override { std::cout << "clear()" << std::endl; }
+  void initialize() override { std::cout << "initialize()" << std::endl; }
 
   void load_subscriber_batch(
       const std::vector<TATPSubscriberRecord> &batch) override {

@@ -207,7 +207,7 @@ void TATPBenchmark::load() {
   std::unique_ptr<TATPConnection> conn = server_->connect();
 
   // Drop all relevant tables in the database, if they exist.
-  conn->clear();
+  conn->initialize();
 
   Generator rg;
 
