@@ -1,4 +1,6 @@
-#include "benchmarks/tatp/tatp_benchmark.h"
+#include "txbench/benchmarks/tatp.h"
+
+#include <array>
 #include <iostream>
 #include <memory>
 
@@ -99,9 +101,11 @@ public:
 };
 
 int main(int argc, char **argv) {
+  TATPOptions options = TATPOptions::parse(argc, argv);
   auto server = std::make_unique<StdoutTATPServer>();
 
-  TATPBenchmark benchmark = TATPBenchmark::parse(argc, argv, std::move(server));
+  TATPBenchmark benchmark(std::move(server), options);
+
   double tps = benchmark.run();
 
   std::cout << "Throughput (tps): " << tps << std::endl;

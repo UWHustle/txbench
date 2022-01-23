@@ -1,7 +1,8 @@
-#ifndef TXBENCH_SRC_UTILITIES_WORKER_H
-#define TXBENCH_SRC_UTILITIES_WORKER_H
+#ifndef TXBENCH_WORKER_H
+#define TXBENCH_WORKER_H
 
 #include <atomic>
+#include <utility>
 
 class Worker {
 public:
@@ -16,4 +17,4 @@ protected:
   std::atomic_size_t commit_count_;
 };
 
-#endif // TXBENCH_SRC_UTILITIES_WORKER_H
+#endif // TXBENCH_WORKER_H

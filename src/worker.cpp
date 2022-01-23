@@ -1,4 +1,4 @@
-#include "worker.h"
+#include "txbench/worker.h"
 
 Worker::Worker() : commit_count_(0) {}
 

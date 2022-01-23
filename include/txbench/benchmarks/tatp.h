@@ -1,8 +1,22 @@
-#ifndef TXBENCH_SRC_BENCHMARKS_TATP_TATP_CONNECTION_H
-#define TXBENCH_SRC_BENCHMARKS_TATP_TATP_CONNECTION_H
+#ifndef TXBENCH_TATP_H
+#define TXBENCH_TATP_H
+
+#include "txbench/benchmark.h"
 
 #include <array>
+#include <memory>
 #include <string>
+#include <utility>
+
+struct TATPOptions {
+  static TATPOptions parse(int argc, char **argv);
+
+  bool load;
+  size_t num_rows;
+  size_t num_workers;
+  size_t warmup_duration;
+  size_t measure_duration;
+};
 
 class TATPConnection {
 public:
@@ -54,4 +68,27 @@ public:
                                       int start_time) = 0;
 };
 
-#endif // TXBENCH_SRC_BENCHMARKS_TATP_TATP_CONNECTION_H
+class TATPServer {
+public:
+  virtual ~TATPServer() = default;
+  virtual std::unique_ptr<TATPConnection> connect() = 0;
+};
+
+class TATPBenchmark : public Benchmark {
+public:
+  TATPBenchmark(std::unique_ptr<TATPServer> server, bool load, size_t num_rows,
+                size_t num_workers, size_t warmup_duration,
+                size_t measure_duration);
+
+  TATPBenchmark(std::unique_ptr<TATPServer> server, TATPOptions options);
+
+protected:
+  void load() override;
+  std::unique_ptr<Worker> make_worker() override;
+
+private:
+  std::unique_ptr<TATPServer> server_;
+  size_t num_rows_;
+};
+
+#endif // TXBENCH_TATP_H
