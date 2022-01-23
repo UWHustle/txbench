@@ -8,9 +8,36 @@
 
 #include <algorithm>
 #include <array>
+#include <functional>
 #include <random>
 #include <string>
 #include <utility>
+
+template <typename Record> class BatchedRecordLoader {
+public:
+  explicit BatchedRecordLoader(
+      std::function<void(const std::vector<Record> &)> &&load,
+      size_t batch_size = 1000)
+      : load_(load), batch_size_(batch_size) {}
+
+  void insert(Record &&record) {
+    batch_.push_back(record);
+    if (batch_.size() == batch_size_) {
+      flush();
+    }
+  }
+
+  void flush() {
+    if (!batch_.empty()) {
+      load_(batch_);
+    }
+  }
+
+private:
+  std::function<void(const std::vector<Record> &)> load_;
+  std::vector<Record> batch_;
+  size_t batch_size_;
+};
 
 std::string leading_zero_pad(size_t length, const std::string &s) {
   assert(length >= s.length());
@@ -181,6 +208,18 @@ void TATPBenchmark::load() {
 
   Generator rg;
 
+  BatchedRecordLoader<TATPSubscriberRecord> subscriber_loader(
+      [&](const auto &batch) { conn->load_subscriber_batch(batch); });
+
+  BatchedRecordLoader<TATPAccessInfoRecord> access_info_loader(
+      [&](const auto &batch) { conn->load_access_info_batch(batch); });
+
+  BatchedRecordLoader<TATPSpecialFacilityRecord> special_facility_loader(
+      [&](const auto &batch) { conn->load_special_facility_batch(batch); });
+
+  BatchedRecordLoader<TATPCallForwardingRecord> call_forwarding_loader(
+      [&](const auto &batch) { conn->load_call_forwarding_batch(batch); });
+
   std::vector<int> s_ids(num_rows_);
   std::iota(s_ids.begin(), s_ids.end(), 1);
   std::shuffle(s_ids.begin(), s_ids.end(), rg.mt());
@@ -206,8 +245,8 @@ void TATPBenchmark::load() {
     int msc_location = rg.random_int(INT_MIN, INT_MAX);
     int vlr_location = rg.random_int(INT_MIN, INT_MAX);
 
-    conn->new_subscriber_row(s_id, std::move(sub_nbr), bit, hex, byte2,
-                             msc_location, vlr_location);
+    subscriber_loader.insert({s_id, std::move(sub_nbr), bit, hex, byte2,
+                              msc_location, vlr_location});
 
     std::vector<int> ai_type_possible = {1, 2, 3, 4};
     std::vector<int> ai_types;
@@ -220,8 +259,8 @@ void TATPBenchmark::load() {
       std::string data3 = uppercase_string(3, rg);
       std::string data4 = uppercase_string(5, rg);
 
-      conn->new_access_info_row(s_id, ai_type, data_1, data_2, std::move(data3),
-                                std::move(data4));
+      access_info_loader.insert(
+          {s_id, ai_type, data_1, data_2, std::move(data3), std::move(data4)});
     }
 
     std::vector<int> sf_types_possible = {1, 2, 3, 4};
@@ -235,8 +274,8 @@ void TATPBenchmark::load() {
       int data_a = rg.random_int(0, 255);
       std::string data_b = uppercase_string(5, rg);
 
-      conn->new_special_facility_row(s_id, sf_type, is_active, error_cntrl,
-                                     data_a, std::move(data_b));
+      special_facility_loader.insert(
+          {s_id, sf_type, is_active, error_cntrl, data_a, std::move(data_b)});
 
       std::vector<int> start_times_possible = {0, 8, 16};
       std::vector<int> start_times;
@@ -248,11 +287,16 @@ void TATPBenchmark::load() {
         int end_time = start_time + rg.random_int(1, 8);
         std::string numberx = uppercase_string(15, rg);
 
-        conn->new_call_forwarding_row(s_id, sf_type, start_time, end_time,
-                                      std::move(numberx));
+        call_forwarding_loader.insert(
+            {s_id, sf_type, start_time, end_time, std::move(numberx)});
       }
     }
   }
+
+  subscriber_loader.flush();
+  access_info_loader.flush();
+  special_facility_loader.flush();
+  call_forwarding_loader.flush();
 }
 
 std::unique_ptr<Worker> TATPBenchmark::make_worker() {

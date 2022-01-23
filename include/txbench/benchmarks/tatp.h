@@ -18,27 +18,59 @@ struct TATPOptions {
   size_t measure_duration;
 };
 
+struct TATPSubscriberRecord {
+  int s_id;
+  std::string sub_nbr;
+  std::array<bool, 10> bit;
+  std::array<int, 10> hex;
+  std::array<int, 10> byte2;
+  int msc_location;
+  int vlr_location;
+};
+
+struct TATPAccessInfoRecord {
+  int s_id;
+  int ai_type;
+  int data1;
+  int data2;
+  std::string data3;
+  std::string data4;
+};
+
+struct TATPSpecialFacilityRecord {
+  int s_id;
+  int sf_type;
+  bool is_active;
+  int error_cntrl;
+  int data_a;
+  std::string data_b;
+};
+
+struct TATPCallForwardingRecord {
+  int s_id;
+  int sf_type;
+  int start_time;
+  int end_time;
+  std::string numberx;
+};
+
 class TATPConnection {
 public:
   virtual ~TATPConnection() = default;
 
   // Loading functions.
 
-  virtual void new_subscriber_row(int s_id, std::string sub_nbr,
-                                  std::array<bool, 10> bit,
-                                  std::array<int, 10> hex,
-                                  std::array<int, 10> byte2, int msc_location,
-                                  int vlr_location) = 0;
+  virtual void
+  load_subscriber_batch(const std::vector<TATPSubscriberRecord> &batch) = 0;
 
-  virtual void new_access_info_row(int s_id, int ai_type, int data1, int data2,
-                                   std::string data3, std::string data4) = 0;
+  virtual void
+  load_access_info_batch(const std::vector<TATPAccessInfoRecord> &batch) = 0;
 
-  virtual void new_special_facility_row(int s_id, int sf_type, bool is_active,
-                                        int error_cntrl, int data_a,
-                                        std::string data_b) = 0;
+  virtual void load_special_facility_batch(
+      const std::vector<TATPSpecialFacilityRecord> &batch) = 0;
 
-  virtual void new_call_forwarding_row(int s_id, int sf_type, int start_time,
-                                       int end_time, std::string numberx) = 0;
+  virtual void load_call_forwarding_batch(
+      const std::vector<TATPCallForwardingRecord> &batch) = 0;
 
   // Benchmark functions.
 
