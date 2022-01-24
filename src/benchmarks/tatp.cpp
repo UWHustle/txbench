@@ -3,6 +3,7 @@
 #include "txbench/benchmark.h"
 #include "txbench/worker.h"
 
+#include "utilities/buffer.h"
 #include "utilities/generator.h"
 #include "utilities/options.h"
 
@@ -12,32 +13,6 @@
 #include <random>
 #include <string>
 #include <utility>
-
-template <typename Record> class BatchedRecordLoader {
-public:
-  explicit BatchedRecordLoader(
-      std::function<void(const std::vector<Record> &)> &&load,
-      size_t batch_size = 1000)
-      : load_(load), batch_size_(batch_size) {}
-
-  void insert(Record &&record) {
-    batch_.push_back(record);
-    if (batch_.size() == batch_size_) {
-      flush();
-    }
-  }
-
-  void flush() {
-    if (!batch_.empty()) {
-      load_(batch_);
-    }
-  }
-
-private:
-  std::function<void(const std::vector<Record> &)> load_;
-  std::vector<Record> batch_;
-  size_t batch_size_;
-};
 
 std::string leading_zero_pad(size_t length, const std::string &s) {
   assert(length >= s.length());
@@ -92,7 +67,7 @@ TATPOptions TATPOptions::parse(int argc, char **argv) {
 
 class TATPWorker : public Worker {
 public:
-  TATPWorker(size_t num_rows, std::unique_ptr<TATPConnection> connection)
+  TATPWorker(size_t num_rows, std::unique_ptr<TATPClientConnection> connection)
       : num_rows_(
             num_rows <= (size_t)INT_MAX
                 ? (int)num_rows
@@ -188,7 +163,7 @@ public:
 private:
   int num_rows_;
   int a_val_;
-  std::unique_ptr<TATPConnection> connection_;
+  std::unique_ptr<TATPClientConnection> connection_;
 };
 
 TATPBenchmark::TATPBenchmark(std::unique_ptr<TATPServer> server, bool load,
@@ -204,19 +179,21 @@ TATPBenchmark::TATPBenchmark(std::unique_ptr<TATPServer> server,
                     options.measure_duration) {}
 
 void TATPBenchmark::load() {
+  std::unique_ptr<TATPLoaderConnection> conn = server_->connect_loader();
+
   Generator rg;
 
-  BatchedRecordLoader<TATPSubscriberRecord> subscriber_loader(
-      [&](const auto &batch) { server_->load_subscriber_batch(batch); });
+  Buffer<TATPSubscriberRecord> subscriber_buffer(
+      [&](const auto &batch) { conn->load_subscriber_batch(batch); });
 
-  BatchedRecordLoader<TATPAccessInfoRecord> access_info_loader(
-      [&](const auto &batch) { server_->load_access_info_batch(batch); });
+  Buffer<TATPAccessInfoRecord> access_info_buffer(
+      [&](const auto &batch) { conn->load_access_info_batch(batch); });
 
-  BatchedRecordLoader<TATPSpecialFacilityRecord> special_facility_loader(
-      [&](const auto &batch) { server_->load_special_facility_batch(batch); });
+  Buffer<TATPSpecialFacilityRecord> special_facility_buffer(
+      [&](const auto &batch) { conn->load_special_facility_batch(batch); });
 
-  BatchedRecordLoader<TATPCallForwardingRecord> call_forwarding_loader(
-      [&](const auto &batch) { server_->load_call_forwarding_batch(batch); });
+  Buffer<TATPCallForwardingRecord> call_forwarding_buffer(
+      [&](const auto &batch) { conn->load_call_forwarding_batch(batch); });
 
   std::vector<int> s_ids(num_rows_);
   std::iota(s_ids.begin(), s_ids.end(), 1);
@@ -243,7 +220,7 @@ void TATPBenchmark::load() {
     int msc_location = rg.random_int(INT_MIN, INT_MAX);
     int vlr_location = rg.random_int(INT_MIN, INT_MAX);
 
-    subscriber_loader.insert({s_id, std::move(sub_nbr), bit, hex, byte2,
+    subscriber_buffer.insert({s_id, std::move(sub_nbr), bit, hex, byte2,
                               msc_location, vlr_location});
 
     std::vector<int> ai_type_possible = {1, 2, 3, 4};
@@ -257,7 +234,7 @@ void TATPBenchmark::load() {
       std::string data3 = uppercase_string(3, rg);
       std::string data4 = uppercase_string(5, rg);
 
-      access_info_loader.insert(
+      access_info_buffer.insert(
           {s_id, ai_type, data_1, data_2, std::move(data3), std::move(data4)});
     }
 
@@ -272,7 +249,7 @@ void TATPBenchmark::load() {
       int data_a = rg.random_int(0, 255);
       std::string data_b = uppercase_string(5, rg);
 
-      special_facility_loader.insert(
+      special_facility_buffer.insert(
           {s_id, sf_type, is_active, error_cntrl, data_a, std::move(data_b)});
 
       std::vector<int> start_times_possible = {0, 8, 16};
@@ -285,18 +262,18 @@ void TATPBenchmark::load() {
         int end_time = start_time + rg.random_int(1, 8);
         std::string numberx = uppercase_string(15, rg);
 
-        call_forwarding_loader.insert(
+        call_forwarding_buffer.insert(
             {s_id, sf_type, start_time, end_time, std::move(numberx)});
       }
     }
   }
 
-  subscriber_loader.flush();
-  access_info_loader.flush();
-  special_facility_loader.flush();
-  call_forwarding_loader.flush();
+  subscriber_buffer.flush();
+  access_info_buffer.flush();
+  special_facility_buffer.flush();
+  call_forwarding_buffer.flush();
 }
 
 std::unique_ptr<Worker> TATPBenchmark::make_worker() {
-  return std::make_unique<TATPWorker>(num_rows_, server_->connect());
+  return std::make_unique<TATPWorker>(num_rows_, server_->connect_client());
 }

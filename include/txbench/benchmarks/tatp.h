@@ -54,9 +54,26 @@ struct TATPCallForwardingRecord {
   std::string numberx;
 };
 
-class TATPConnection {
+class TATPLoaderConnection {
 public:
-  virtual ~TATPConnection() = default;
+  virtual ~TATPLoaderConnection() = default;
+
+  virtual void
+  load_subscriber_batch(const std::vector<TATPSubscriberRecord> &batch) = 0;
+
+  virtual void
+  load_access_info_batch(const std::vector<TATPAccessInfoRecord> &batch) = 0;
+
+  virtual void load_special_facility_batch(
+      const std::vector<TATPSpecialFacilityRecord> &batch) = 0;
+
+  virtual void load_call_forwarding_batch(
+      const std::vector<TATPCallForwardingRecord> &batch) = 0;
+};
+
+class TATPClientConnection {
+public:
+  virtual ~TATPClientConnection() = default;
 
   virtual void get_subscriber_data(int s_id, std::string *sub_nbr,
                                    std::array<bool, 10> &bit,
@@ -88,19 +105,9 @@ class TATPServer {
 public:
   virtual ~TATPServer() = default;
 
-  virtual std::unique_ptr<TATPConnection> connect() = 0;
+  virtual std::unique_ptr<TATPLoaderConnection> connect_loader() = 0;
 
-  virtual void
-  load_subscriber_batch(const std::vector<TATPSubscriberRecord> &batch) = 0;
-
-  virtual void
-  load_access_info_batch(const std::vector<TATPAccessInfoRecord> &batch) = 0;
-
-  virtual void load_special_facility_batch(
-      const std::vector<TATPSpecialFacilityRecord> &batch) = 0;
-
-  virtual void load_call_forwarding_batch(
-      const std::vector<TATPCallForwardingRecord> &batch) = 0;
+  virtual std::unique_ptr<TATPClientConnection> connect_client() = 0;
 };
 
 class TATPBenchmark : public Benchmark {
