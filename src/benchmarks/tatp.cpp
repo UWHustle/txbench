@@ -204,24 +204,19 @@ TATPBenchmark::TATPBenchmark(std::unique_ptr<TATPServer> server,
                     options.measure_duration) {}
 
 void TATPBenchmark::load() {
-  std::unique_ptr<TATPConnection> conn = server_->connect();
-
-  // Drop all relevant tables in the database, if they exist.
-  conn->initialize();
-
   Generator rg;
 
   BatchedRecordLoader<TATPSubscriberRecord> subscriber_loader(
-      [&](const auto &batch) { conn->load_subscriber_batch(batch); });
+      [&](const auto &batch) { server_->load_subscriber_batch(batch); });
 
   BatchedRecordLoader<TATPAccessInfoRecord> access_info_loader(
-      [&](const auto &batch) { conn->load_access_info_batch(batch); });
+      [&](const auto &batch) { server_->load_access_info_batch(batch); });
 
   BatchedRecordLoader<TATPSpecialFacilityRecord> special_facility_loader(
-      [&](const auto &batch) { conn->load_special_facility_batch(batch); });
+      [&](const auto &batch) { server_->load_special_facility_batch(batch); });
 
   BatchedRecordLoader<TATPCallForwardingRecord> call_forwarding_loader(
-      [&](const auto &batch) { conn->load_call_forwarding_batch(batch); });
+      [&](const auto &batch) { server_->load_call_forwarding_batch(batch); });
 
   std::vector<int> s_ids(num_rows_);
   std::iota(s_ids.begin(), s_ids.end(), 1);
