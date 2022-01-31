@@ -1,4 +1,4 @@
-#include "options.h"
+#include "options.hpp"
 
 Option::Option(std::string key, std::string help,
                std::shared_ptr<const cxxopts::Value> value, bool required)

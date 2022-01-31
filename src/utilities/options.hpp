@@ -1,5 +1,5 @@
-#ifndef TXBENCH_OPTIONS_H
-#define TXBENCH_OPTIONS_H
+#ifndef TXBENCH_OPTIONS_HPP
+#define TXBENCH_OPTIONS_HPP
 
 #include "cxxopts.hpp"
 
@@ -38,4 +38,4 @@ private:
   std::vector<Option> options_;
 };
 
-#endif // TXBENCH_OPTIONS_H
+#endif // TXBENCH_OPTIONS_HPP

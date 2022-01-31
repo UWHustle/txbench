@@ -1,5 +1,5 @@
-#ifndef TXBENCH_BUFFER_H
-#define TXBENCH_BUFFER_H
+#ifndef TXBENCH_BUFFER_HPP
+#define TXBENCH_BUFFER_HPP
 
 #include <functional>
 #include <utility>
@@ -31,4 +31,4 @@ private:
   size_t capacity_;
 };
 
-#endif // TXBENCH_BUFFER_H
+#endif // TXBENCH_BUFFER_HPP

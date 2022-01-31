@@ -1,5 +1,5 @@
-#ifndef TXBENCH_WORKER_H
-#define TXBENCH_WORKER_H
+#ifndef TXBENCH_WORKER_HPP
+#define TXBENCH_WORKER_HPP
 
 #include <atomic>
 #include <utility>
@@ -17,4 +17,4 @@ protected:
   std::atomic_size_t commit_count_;
 };
 
-#endif // TXBENCH_WORKER_H
+#endif // TXBENCH_WORKER_HPP

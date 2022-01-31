@@ -1,10 +1,17 @@
-#ifndef TXBENCH_BENCHMARK_H
-#define TXBENCH_BENCHMARK_H
+#ifndef TXBENCH_BENCHMARK_HPP
+#define TXBENCH_BENCHMARK_HPP
 
-#include "worker.h"
+#include "worker.hpp"
 
 #include <memory>
 #include <utility>
+
+enum ReturnCode {
+  TXBENCH_SUCCESS,
+  TXBENCH_CONSTRAINT,
+  TXBENCH_MISSING,
+  TXBENCH_FAILURE
+};
 
 class Benchmark {
 public:
@@ -24,4 +31,4 @@ private:
   size_t measure_duration_;
 };
 
-#endif // TXBENCH_BENCHMARK_H
+#endif // TXBENCH_BENCHMARK_HPP

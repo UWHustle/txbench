@@ -1,11 +1,11 @@
-#include "txbench/benchmarks/tatp.h"
+#include "txbench/benchmarks/tatp.hpp"
 
-#include "txbench/benchmark.h"
-#include "txbench/worker.h"
+#include "txbench/benchmark.hpp"
+#include "txbench/worker.hpp"
 
-#include "utilities/buffer.h"
-#include "utilities/generator.h"
-#include "utilities/options.h"
+#include "utilities/buffer.hpp"
+#include "utilities/generator.hpp"
+#include "utilities/options.hpp"
 
 #include <algorithm>
 #include <array>
@@ -24,8 +24,9 @@ std::string uppercase_string(size_t length, Generator &rg) {
   static std::uniform_int_distribution<size_t> dis(0, chars.size() - 1);
 
   std::string s(length, 0);
-  std::generate(s.begin(), s.end(),
-                [&] { return chars[rg.random_size_t(0, chars.size() - 1)]; });
+  std::generate(s.begin(), s.end(), [&] {
+    return chars[rg.random_int(size_t(0), chars.size() - 1)];
+  });
 
   return s;
 }
@@ -33,8 +34,8 @@ std::string uppercase_string(size_t length, Generator &rg) {
 TATPOptions TATPOptions::parse(int argc, char **argv) {
   Options options(argv[0], "The TATP benchmark");
 
-  options.add<size_t>("num_rows", "Number of rows in the Subscriber table",
-                      true);
+  options.add<unsigned long long>(
+      "num_rows", "Number of rows in the Subscriber table", true);
   options.add<size_t>("num_workers", "Number of worker threads", true);
   options.add<bool>("load", "Load the benchmark data (default: false)", false);
   options.add<size_t>("warmup_duration",
@@ -44,8 +45,8 @@ TATPOptions TATPOptions::parse(int argc, char **argv) {
 
   ParseResult result = options.parse(argc, argv);
 
-  size_t num_rows = result["num_rows"].as<size_t>();
-  size_t num_workers = result["num_workers"].as<size_t>();
+  auto num_rows = result["num_rows"].as<unsigned long long>();
+  auto num_workers = result["num_workers"].as<size_t>();
 
   bool load = false;
   if (result.count("load")) {
@@ -67,102 +68,105 @@ TATPOptions TATPOptions::parse(int argc, char **argv) {
 
 class TATPWorker : public Worker {
 public:
-  TATPWorker(size_t num_rows, std::unique_ptr<TATPClientConnection> connection)
-      : num_rows_(
-            num_rows <= (size_t)INT_MAX
-                ? (int)num_rows
-                : throw std::runtime_error(
-                      "number of rows must representable by the integer type")),
-        a_val_(num_rows <= 1000000    ? 65535
-               : num_rows <= 10000000 ? 1048575
-                                      : 2097151),
+  TATPWorker(unsigned long long num_rows,
+             std::unique_ptr<TATPClientConnection> connection)
+      : num_rows_(num_rows), a_val_(num_rows <= 1000000    ? 65535
+                                    : num_rows <= 10000000 ? 1048575
+                                                           : 2097151),
         connection_(std::move(connection)) {}
 
   void run(std::atomic_bool &terminate) override {
     Generator rg;
 
-    static int start_times_possible[] = {0, 8, 16};
+    static unsigned short start_times_possible[] = {0, 8, 16};
 
     while (!terminate) {
-      int s_id =
-          (rg.random_int(0, a_val_) | rg.random_int(1, num_rows_)) % num_rows_ +
-          1;
+      unsigned long long s_id =
+          (rg.random_int(0ull, a_val_) | rg.random_int(1ull, num_rows_)) %
+              num_rows_ +
+          1ull;
 
       int transaction_type = rg.random_int(0, 99);
+
+      ReturnCode rc;
 
       if (transaction_type < 35) {
         // GET_SUBSCRIBER_DATA
         // Probability: 35%
         std::string sub_nbr;
         std::array<bool, 10> bit{};
-        std::array<int, 10> hex{};
-        std::array<int, 10> byte2{};
-        int msc_location, vlr_location;
-        connection_->get_subscriber_data(s_id, &sub_nbr, bit, hex, byte2,
-                                         &msc_location, &vlr_location);
+        std::array<unsigned short, 10> hex{};
+        std::array<unsigned short, 10> byte2{};
+        unsigned long msc_location, vlr_location;
+        rc = connection_->get_subscriber_data(s_id, &sub_nbr, bit, hex, byte2,
+                                              &msc_location, &vlr_location);
 
       } else if (transaction_type < 45) {
         // GET_NEW_DESTINATION
         // Probability: 10%
-        int sf_type = rg.random_int(1, 4);
-        int start_time = start_times_possible[rg.random_int(0, 2)];
-        int end_time = rg.random_int(1, 24);
-        std::string numberx;
-        connection_->get_new_destination(s_id, sf_type, start_time, end_time,
-                                         &numberx);
+        unsigned short sf_type = rg.random_int(1, 4);
+        unsigned short start_time = start_times_possible[rg.random_int(0, 2)];
+        unsigned short end_time = rg.random_int(1, 24);
+        std::vector<std::string> numberx;
+        rc = connection_->get_new_destination(s_id, sf_type, start_time,
+                                              end_time, &numberx);
 
       } else if (transaction_type < 80) {
         // GET_ACCESS_DATA
         // Probability: 35%
-        int ai_type = rg.random_int(1, 4);
-        int data1, data2;
+        unsigned short ai_type = rg.random_int(1, 4);
+        unsigned short data1, data2;
         std::string data3, data4;
-        connection_->get_access_data(s_id, ai_type, &data1, &data2, &data3,
-                                     &data4);
+        rc = connection_->get_access_data(s_id, ai_type, &data1, &data2, &data3,
+                                          &data4);
 
       } else if (transaction_type < 82) {
         // UPDATE_SUBSCRIBER_DATA
         // Probability: 2%
         bool bit_1 = rg.random_bool();
-        int sf_type = rg.random_int(1, 4);
-        int data_a = rg.random_int(0, 255);
-        connection_->update_subscriber_data(s_id, bit_1, sf_type, data_a);
+        unsigned short sf_type = rg.random_int(1, 4);
+        unsigned short data_a = rg.random_int(0, 255);
+        rc = connection_->update_subscriber_data(s_id, bit_1, sf_type, data_a);
 
       } else if (transaction_type < 96) {
         // UPDATE_LOCATION
         // Probability: 14%
         std::string sub_nbr = leading_zero_pad(15, std::to_string(s_id));
-        int vlr_location = rg.random_int(INT_MIN, INT_MAX);
-        connection_->update_location(sub_nbr, vlr_location);
+        unsigned long vlr_location = rg.random_int(1ull, 4294967295ull);
+        rc = connection_->update_location(sub_nbr, vlr_location);
 
       } else if (transaction_type < 98) {
         // INSERT_CALL_FORWARDING
         // Probability: 2%
         std::string sub_nbr = leading_zero_pad(15, std::to_string(s_id));
-        int sf_type = rg.random_int(1, 4);
-        int start_time = start_times_possible[rg.random_int(0, 2)];
-        int end_time = rg.random_int(1, 24);
-        std::string numberx =
-            leading_zero_pad(15, std::to_string(rg.random_int(1, num_rows_)));
-        connection_->insert_call_forwarding(sub_nbr, sf_type, start_time,
-                                            end_time, numberx);
+        unsigned short sf_type = rg.random_int(1, 4);
+        unsigned short start_time = start_times_possible[rg.random_int(0, 2)];
+        unsigned short end_time = rg.random_int(1, 24);
+        std::string numberx = leading_zero_pad(
+            15, std::to_string(rg.random_int(1ull, num_rows_)));
+        rc = connection_->insert_call_forwarding(sub_nbr, sf_type, start_time,
+                                                 end_time, numberx);
 
       } else {
         // DELETE_CALL_FORWARDING
         // Probability: 2%
         std::string sub_nbr = leading_zero_pad(15, std::to_string(s_id));
-        int sf_type = rg.random_int(1, 4);
-        int start_time = start_times_possible[rg.random_int(0, 2)];
-        connection_->delete_call_forwarding(sub_nbr, sf_type, start_time);
+        unsigned short sf_type = rg.random_int(1, 4);
+        unsigned short start_time = start_times_possible[rg.random_int(0, 2)];
+        rc = connection_->delete_call_forwarding(sub_nbr, sf_type, start_time);
       }
 
-      commit_count_++;
+      if (rc == TXBENCH_SUCCESS) {
+        ++commit_count_;
+      } else if (rc == TXBENCH_FAILURE) {
+        throw std::runtime_error("transaction failed for unknown reason");
+      }
     }
   }
 
 private:
-  int num_rows_;
-  int a_val_;
+  unsigned long long num_rows_;
+  unsigned long long a_val_;
   std::unique_ptr<TATPClientConnection> connection_;
 };
 
@@ -195,11 +199,11 @@ void TATPBenchmark::load() {
   Buffer<TATPCallForwardingRecord> call_forwarding_buffer(
       [&](const auto &batch) { conn->load_call_forwarding_batch(batch); });
 
-  std::vector<int> s_ids(num_rows_);
+  std::vector<unsigned long long> s_ids(num_rows_);
   std::iota(s_ids.begin(), s_ids.end(), 1);
   std::shuffle(s_ids.begin(), s_ids.end(), rg.mt());
 
-  for (int s_id : s_ids) {
+  for (unsigned long long s_id : s_ids) {
     std::string sub_nbr = leading_zero_pad(15, std::to_string(s_id));
 
     std::array<bool, 10> bit{};
@@ -207,30 +211,30 @@ void TATPBenchmark::load() {
       bit_i = rg.random_bool();
     }
 
-    std::array<int, 10> hex{};
-    for (int &hex_i : hex) {
+    std::array<unsigned short, 10> hex{};
+    for (unsigned short &hex_i : hex) {
       hex_i = rg.random_int(0, 15);
     }
 
-    std::array<int, 10> byte2{};
-    for (int &byte2_i : byte2) {
+    std::array<unsigned short, 10> byte2{};
+    for (unsigned short &byte2_i : byte2) {
       byte2_i = rg.random_int(0, 255);
     }
 
-    int msc_location = rg.random_int(INT_MIN, INT_MAX);
-    int vlr_location = rg.random_int(INT_MIN, INT_MAX);
+    unsigned long msc_location = rg.random_int(1ull, 4294967295ull);
+    unsigned long vlr_location = rg.random_int(1ull, 4294967295ull);
 
     subscriber_buffer.insert({s_id, std::move(sub_nbr), bit, hex, byte2,
                               msc_location, vlr_location});
 
-    std::vector<int> ai_type_possible = {1, 2, 3, 4};
-    std::vector<int> ai_types;
+    std::vector<unsigned short> ai_type_possible = {1, 2, 3, 4};
+    std::vector<unsigned short> ai_types;
     std::sample(ai_type_possible.begin(), ai_type_possible.end(),
                 std::back_inserter(ai_types), rg.random_int(1, 4), rg.mt());
 
-    for (int ai_type : ai_types) {
-      int data_1 = rg.random_int(0, 255);
-      int data_2 = rg.random_int(0, 255);
+    for (unsigned short ai_type : ai_types) {
+      unsigned short data_1 = rg.random_int(0, 255);
+      unsigned short data_2 = rg.random_int(0, 255);
       std::string data3 = uppercase_string(3, rg);
       std::string data4 = uppercase_string(5, rg);
 
@@ -238,28 +242,28 @@ void TATPBenchmark::load() {
           {s_id, ai_type, data_1, data_2, std::move(data3), std::move(data4)});
     }
 
-    std::vector<int> sf_types_possible = {1, 2, 3, 4};
-    std::vector<int> sf_types;
+    std::vector<unsigned short> sf_types_possible = {1, 2, 3, 4};
+    std::vector<unsigned short> sf_types;
     std::sample(sf_types_possible.begin(), sf_types_possible.end(),
                 std::back_inserter(sf_types), rg.random_int(1, 4), rg.mt());
 
-    for (int sf_type : sf_types) {
-      bool is_active = rg.random_bool();
-      int error_cntrl = rg.random_int(0, 255);
-      int data_a = rg.random_int(0, 255);
+    for (unsigned short sf_type : sf_types) {
+      bool is_active = rg.random_int(0, 99) < 85;
+      unsigned short error_cntrl = rg.random_int(0, 255);
+      unsigned short data_a = rg.random_int(0, 255);
       std::string data_b = uppercase_string(5, rg);
 
       special_facility_buffer.insert(
           {s_id, sf_type, is_active, error_cntrl, data_a, std::move(data_b)});
 
-      std::vector<int> start_times_possible = {0, 8, 16};
-      std::vector<int> start_times;
+      std::vector<unsigned short> start_times_possible = {0, 8, 16};
+      std::vector<unsigned short> start_times;
       std::sample(start_times_possible.begin(), start_times_possible.end(),
                   std::back_inserter(start_times), rg.random_int(0, 3),
                   rg.mt());
 
-      for (int start_time : start_times) {
-        int end_time = start_time + rg.random_int(1, 8);
+      for (unsigned short start_time : start_times) {
+        unsigned short end_time = start_time + rg.random_int(1, 8);
         std::string numberx = uppercase_string(15, rg);
 
         call_forwarding_buffer.insert(

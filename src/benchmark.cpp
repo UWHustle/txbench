@@ -1,4 +1,4 @@
-#include "txbench/benchmark.h"
+#include "txbench/benchmark.hpp"
 
 #include <atomic>
 #include <chrono>
