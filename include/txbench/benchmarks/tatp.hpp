@@ -191,6 +191,8 @@ public:
 
   std::unique_ptr<TATPClientConnection> connect_client() override;
 
+  [[nodiscard]] const std::unique_ptr<SQLDatabase> &db() const { return db_; }
+
 private:
   std::unique_ptr<SQLDatabase> db_;
 };
