@@ -598,7 +598,7 @@ void txbench::TATPSQLDatabase::create_tables() {
   create_subscriber << "CREATE TABLE subscriber ("
                     << "s_id " << db_->config().uint64_type << ", "
                     << "sub_nbr " << db_->config().fixed_string_type(15)
-                    << ", ";
+                    << " UNIQUE, ";
   for (int i = 1; i <= 10; ++i) {
     create_subscriber << "bit_" << i << " " << db_->config().bool_type << ", ";
   }
