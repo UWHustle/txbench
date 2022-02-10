@@ -193,7 +193,7 @@ public:
 
   [[nodiscard]] const std::unique_ptr<SQLDatabase> &db() const { return db_; }
 
-private:
+protected:
   std::unique_ptr<SQLDatabase> db_;
 };
 
